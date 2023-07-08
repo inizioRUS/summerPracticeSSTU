@@ -128,6 +128,7 @@ class UserServiceImplTest {
         UserDTO savedUser = userService.updateUserById(userDTO.getId(), userDTO);
 
         assertThat(savedUser).isNotNull();
+        assertEquals(savedUser, userDTO);
 
     }
 

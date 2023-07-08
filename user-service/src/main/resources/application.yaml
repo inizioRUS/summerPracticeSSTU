@@ -14,3 +14,7 @@ spring:
   main:
     web-application-type: servlet
 
+#  security:
+#    user:
+#      name: dima
+#      password: 123

@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
         String email = userDTO.getEmail();
 
-        String password = userDTO.getPassword();
+//        String password = userDTO.getPassword();
 
         String name = userDTO.getName();
 
@@ -69,9 +69,11 @@ public class UserServiceImpl implements UserService {
             userDB.setEmail(email);
         }
 
-        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
-            userDB.setPassword(password);
-        }
+//        TODO ДОДЕЛАТЬ ИЗМЕНЕНИЕ ПАРОЛЯ С ПРЕОБРАЗОВАНИЕМ В BCRYPT
+
+//        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
+//            userDB.setPassword(password);
+//        }
 
         if (Objects.nonNull(name) && !"".equalsIgnoreCase(name)) {
             userDB.setName(name);
