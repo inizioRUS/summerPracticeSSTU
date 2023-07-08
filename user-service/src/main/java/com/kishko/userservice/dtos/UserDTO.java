@@ -1,5 +1,6 @@
 package com.kishko.userservice.dtos;
 
+import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Role;
 import com.kishko.userservice.entities.Stock;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,6 @@ public class UserDTO {
 
     private Role role;
 
-    private List<Stock> stocks;
+    private List<AdvancedStock> advancedStocks;
 
 }

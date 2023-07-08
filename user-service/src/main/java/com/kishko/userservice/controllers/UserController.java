@@ -1,5 +1,6 @@
 package com.kishko.userservice.controllers;
 
+import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.services.UserService;
@@ -37,9 +38,21 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUserById(id, userDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/{userId}/stock/{stockId}")
-    public ResponseEntity<UserDTO> updateUserStocks(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.updateUserStocks(userId, stockId), HttpStatus.OK);
+//    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
+
+    @PutMapping("/{userId}/stock/{stockId}/{count}")
+    public ResponseEntity<UserDTO> updateUserStocks(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId, @PathVariable("count") Integer count) throws Exception {
+        return new ResponseEntity<>(userService.updateUserStocks(userId, stockId, count), HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/incBalance/{amount}")
+    public ResponseEntity<UserDTO> increaseUserBalance(@PathVariable("userId") Long userId, @PathVariable("amount") Double amount) throws Exception {
+        return new ResponseEntity<>(userService.increaseUserBalance(userId, amount), HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/decBalance/{amount}")
+    public ResponseEntity<UserDTO> decreaseUserBalance(@PathVariable("userId") Long userId, @PathVariable("amount") Double amount) throws Exception {
+        return new ResponseEntity<>(userService.decreaseUserBalance(userId, amount), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -47,9 +60,11 @@ public class UserController {
         return new ResponseEntity<>(userService.deleteUserById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}/stock/{stockId}")
-    public ResponseEntity<UserDTO> deleteUserStocks(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.deleteUserStocks(userId, stockId), HttpStatus.OK);
+//    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
+
+    @DeleteMapping("/{userId}/stock/{stockId}/{count}")
+    public ResponseEntity<UserDTO> deleteUserStocks(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId, @PathVariable("count") Integer count) throws Exception {
+        return new ResponseEntity<>(userService.deleteUserStocks(userId, stockId, count), HttpStatus.OK);
     }
 
 }

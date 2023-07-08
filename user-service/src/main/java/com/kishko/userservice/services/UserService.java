@@ -1,5 +1,6 @@
 package com.kishko.userservice.services;
 
+import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
@@ -8,6 +9,10 @@ import java.util.List;
 
 public interface UserService {
     List<UserDTO> getAllUsers();
+
+    UserDTO increaseUserBalance(Long userId, Double amount) throws UserNotFoundException;
+
+    UserDTO decreaseUserBalance(Long userId, Double amount) throws Exception;
 
     UserDTO toDTO(User user);
 
@@ -21,7 +26,8 @@ public interface UserService {
 
     String deleteUserById(Long id) throws UserNotFoundException;
 
-    UserDTO updateUserStocks(Long userId, Long stockId) throws UserNotFoundException;
+    UserDTO updateUserStocks(Long userId, Long stockId, Integer count) throws Exception;
 
-    UserDTO deleteUserStocks(Long userId, Long stockId) throws UserNotFoundException;
+    UserDTO deleteUserStocks(Long userId, Long stockId, Integer count) throws Exception;
+
 }

@@ -55,7 +55,7 @@ class UserControllerTest {
                 .password("amirochka05")
                 .role(Role.USER)
                 .balance(15000.0)
-                .stocks(null)
+                .advancedStocks(null)
                 .build();
 
     }
@@ -127,11 +127,6 @@ class UserControllerTest {
     }
 
     @Test
-    @Disabled
-    void updateUserStocks() {
-    }
-
-    @Test
     void deleteUserById() throws Exception {
 
         Long id = 1L;
@@ -146,36 +141,43 @@ class UserControllerTest {
     }
 
     @Test
-    @Disabled
-    void deleteUserStocks() {
+    void increaseUserBalance() throws Exception {
+
+        Long id = userDTO.getId();
+        Double amount = 1000.0;
+
+        when(userService.increaseUserBalance(id, amount)).thenReturn(userDTO);
+
+        ResultActions response = mockMvc.perform(put("/users/" + id + "/incBalance/" + amount)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDTO)));
+
+        response.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(userDTO.getName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email", CoreMatchers.is(userDTO.getEmail())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.balance", CoreMatchers.is(userDTO.getBalance())))
+                .andDo(MockMvcResultHandlers.print());
+
     }
 
-    public UserDTO toDTO(User user) {
+    @Test
+    void decreaseUserBalance() throws Exception {
 
-        return UserDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .role(user.getRole())
-                .balance(user.getBalance())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .stocks(user.getStocks())
-                .build();
-    }
+        Long id = userDTO.getId();
+        Double amount = 1000.0;
 
-    public User toUser(UserDTO userDTO) {
+        when(userService.decreaseUserBalance(id, amount)).thenReturn(userDTO);
 
-        return User.builder()
-                .id(userDTO.getId())
-                .email(userDTO.getEmail())
-                .password(userDTO.getPassword())
-                .role(userDTO.getRole())
-                .balance(userDTO.getBalance())
-                .name(userDTO.getName())
-                .surname(userDTO.getSurname())
-                .stocks(userDTO.getStocks())
-                .build();
+        ResultActions response = mockMvc.perform(put("/users/" + id + "/decBalance/" + amount)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDTO)));
+
+        response.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(userDTO.getName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email", CoreMatchers.is(userDTO.getEmail())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.balance", CoreMatchers.is(userDTO.getBalance())))
+                .andDo(MockMvcResultHandlers.print());
+
     }
 
 }

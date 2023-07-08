@@ -4,6 +4,7 @@ import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.Role;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
+import com.kishko.userservice.repositories.AdvancedStockRepository;
 import com.kishko.userservice.repositories.StockRepository;
 import com.kishko.userservice.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +33,9 @@ class UserServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
+    private AdvancedStockRepository advancedStockRepository;
+
+    @Mock
     private StockRepository stockRepository;
 
     @InjectMocks
@@ -46,7 +47,7 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        userService = new UserServiceImpl(userRepository, stockRepository);
+        userService = new UserServiceImpl(userRepository, advancedStockRepository, stockRepository);
 
         userDTO = UserDTO.builder()
                 .id(1L)
@@ -56,7 +57,7 @@ class UserServiceImplTest {
                 .password("amirochka05")
                 .role(Role.USER)
                 .balance(15000.0)
-                .stocks(null)
+                .advancedStocks(null)
                 .build();
 
         userDTO2 = UserDTO.builder()
@@ -67,7 +68,7 @@ class UserServiceImplTest {
                 .password("amirochka05")
                 .role(Role.USER)
                 .balance(15000.0)
-                .stocks(null)
+                .advancedStocks(null)
                 .build();
 
     }
@@ -128,7 +129,7 @@ class UserServiceImplTest {
         UserDTO savedUser = userService.updateUserById(userDTO.getId(), userDTO);
 
         assertThat(savedUser).isNotNull();
-        assertEquals(savedUser, userDTO);
+        assertEquals(savedUser.getEmail(), userDTO.getEmail());
 
     }
 
@@ -145,27 +146,41 @@ class UserServiceImplTest {
     }
 
     @Test
-    @Disabled
-    void updateUserStocks() {
+    void increaseUserBalance() throws UserNotFoundException {
+
+        mock(UserDTO.class);
+        mock(UserRepository.class);
+
+        Double amount = 1000.0;
+
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.ofNullable(toUser(userDTO)));
+
+        UserDTO savedUser = userService.increaseUserBalance(userDTO.getId(), amount);
+
+        System.out.println(savedUser);
+
+        assertThat(savedUser).isNotNull();
+        assertEquals(savedUser.getBalance(), userDTO.getBalance() + amount);
+
     }
 
     @Test
-    @Disabled
-    void deleteUserStocks() {
-    }
+    void decreaseUserBalance() throws Exception {
 
-    public UserDTO toDTO(User user) {
+        mock(UserDTO.class);
+        mock(UserRepository.class);
 
-        return UserDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .role(user.getRole())
-                .balance(user.getBalance())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .stocks(user.getStocks())
-                .build();
+        Double amount = 1000.0;
+
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.ofNullable(toUser(userDTO)));
+
+        UserDTO savedUser = userService.decreaseUserBalance(userDTO.getId(), amount);
+
+        System.out.println(savedUser);
+
+        assertThat(savedUser).isNotNull();
+        assertEquals(savedUser.getBalance(), userDTO.getBalance() - amount);
+
     }
 
     public User toUser(UserDTO userDTO) {
@@ -178,7 +193,7 @@ class UserServiceImplTest {
                 .balance(userDTO.getBalance())
                 .name(userDTO.getName())
                 .surname(userDTO.getSurname())
-                .stocks(userDTO.getStocks())
+                .advancedStocks(userDTO.getAdvancedStocks())
                 .build();
     }
 }

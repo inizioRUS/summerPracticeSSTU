@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
 @Entity
@@ -16,21 +14,23 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Data
-@Table(name = "stocks")
-public class Stock {
+@Table(name = "advancedStocks")
+public class AdvancedStock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
-    @Column(name = "price")
-    private Double price;
-
+    @ManyToOne
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stock")
-    private List<AdvancedStock> advancedStocks;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "count")
+    private Integer count;
 
 }

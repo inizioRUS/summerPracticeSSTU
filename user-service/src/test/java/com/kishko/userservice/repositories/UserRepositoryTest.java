@@ -31,7 +31,7 @@ class UserRepositoryTest {
                 .password("amirochka05")
                 .role(Role.USER)
                 .balance(15000.0)
-                .stocks(null)
+                .advancedStocks(null)
                 .build();
 
         userRepository.save(user);

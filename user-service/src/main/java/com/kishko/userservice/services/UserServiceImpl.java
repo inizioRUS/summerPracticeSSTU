@@ -1,19 +1,24 @@
 package com.kishko.userservice.services;
 
+import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
-import com.kishko.userservice.entities.Role;
+import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
+import com.kishko.userservice.repositories.AdvancedStockRepository;
 import com.kishko.userservice.repositories.StockRepository;
 import com.kishko.userservice.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AdvancedStockRepository advancedStock;
 
     @Autowired
     private StockRepository stockRepository;
@@ -59,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
         String email = userDTO.getEmail();
 
-//        String password = userDTO.getPassword();
+        String password = userDTO.getPassword();
 
         String name = userDTO.getName();
 
@@ -69,11 +77,9 @@ public class UserServiceImpl implements UserService {
             userDB.setEmail(email);
         }
 
-//        TODO ДОДЕЛАТЬ ИЗМЕНЕНИЕ ПАРОЛЯ С ПРЕОБРАЗОВАНИЕМ В BCRYPT
-
-//        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
-//            userDB.setPassword(password);
-//        }
+        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
+            userDB.setPassword(new BCryptPasswordEncoder().encode(password));
+        }
 
         if (Objects.nonNull(name) && !"".equalsIgnoreCase(name)) {
             userDB.setName(name);
@@ -100,41 +106,94 @@ public class UserServiceImpl implements UserService {
         return "successful deleted";
     }
 
+//    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
+
     @Override
-    public UserDTO updateUserStocks(Long userId, Long stockId) throws UserNotFoundException {
+    public UserDTO updateUserStocks(Long userId, Long stockId, Integer count) throws Exception {
 
-        List<Stock> stocks;
-        UserDTO userDTO = getUserById(userId);
+        UserDTO user = getUserById(userId);
 
-        Stock stock = stockRepository.findById(stockId).get();
+        AdvancedStock advancedStockDB = advancedStock.getAdvancedStockByUserIdAndStockId(userId, stockId);
 
-        stocks = userDTO.getStocks();
-        stocks.add(stock);
+        if (advancedStockDB == null) {
 
-        userDTO.setStocks(stocks);
+            advancedStockDB = AdvancedStock.builder()
+                    .count(0)
+                    .stock(stockRepository.findById(stockId).orElseThrow(
+                            () -> new Exception("There is no such stock with id: " + stockId)
+                    ))
+                    .user(userRepository.findById(userId).orElseThrow(
+                            () -> new Exception("There is no such user with id: " + userId)
+                    ))
+                    .build();
 
-        userRepository.save(toUser(userDTO));
+        }
 
-        return userDTO;
+        int currentCount = advancedStockDB.getCount();
+
+        advancedStockDB.setCount(currentCount + count);
+
+        advancedStock.save(advancedStockDB);
+
+        return user;
+    }
+
+//    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
+
+    @Override
+    public UserDTO deleteUserStocks(Long userId, Long stockId, Integer count) throws Exception {
+
+        UserDTO user = getUserById(userId);
+
+        AdvancedStock advancedStockDB = advancedStock.getAdvancedStockByUserIdAndStockId(userId, stockId);
+
+        if (advancedStockDB == null) throw new Exception("There is no such advancedStock");
+
+        int currentCount = advancedStockDB.getCount();
+
+        advancedStockDB.setCount(currentCount - count);
+
+        if (advancedStockDB.getCount() == 0) {
+
+            advancedStock.deleteById(advancedStockDB.getId());
+
+        } else {
+
+            advancedStock.save(advancedStockDB);
+
+        }
+
+        return user;
+
     }
 
     @Override
-    public UserDTO deleteUserStocks(Long userId, Long stockId) throws UserNotFoundException {
+    public UserDTO increaseUserBalance(Long userId, Double amount) throws UserNotFoundException {
 
-        List<Stock> stocks;
-        UserDTO userDTO = getUserById(userId);
+        UserDTO user = getUserById(userId);
 
-        Stock stock = stockRepository.findById(stockId).get();
+        Double balance = user.getBalance();
 
-        stocks = userDTO.getStocks();
-        stocks.remove(stock);
+        user.setBalance(balance + amount);
 
-        userDTO.setStocks(stocks);
+        return user;
+    }
 
-        userRepository.save(toUser(userDTO));
+    @Override
+    public UserDTO decreaseUserBalance(Long userId, Double amount) throws Exception {
 
-        return userDTO;
+        UserDTO user = getUserById(userId);
 
+        Double balance = user.getBalance();
+
+        double action = balance - amount;
+
+        if (action >= 0) user.setBalance(action);
+        else {
+            throw new Exception("This user haven't quite amount of money to confirm payment");
+        }
+
+        return user;
     }
 
     @Override
@@ -148,7 +207,7 @@ public class UserServiceImpl implements UserService {
                 .balance(user.getBalance())
                 .name(user.getName())
                 .surname(user.getSurname())
-                .stocks(user.getStocks())
+                .advancedStocks(user.getAdvancedStocks())
                 .build();
     }
 
@@ -163,7 +222,30 @@ public class UserServiceImpl implements UserService {
                 .balance(userDTO.getBalance())
                 .name(userDTO.getName())
                 .surname(userDTO.getSurname())
-                .stocks(userDTO.getStocks())
+                .advancedStocks(userDTO.getAdvancedStocks())
+                .build();
+    }
+
+    public AdvancedStockDTO toDTO(AdvancedStock advancedStock) {
+
+        return AdvancedStockDTO.builder()
+                .id(advancedStock.getId())
+                .userId(advancedStock.getUser().getId())
+                .stockId(advancedStock.getStock().getId())
+                .count(advancedStock.getCount())
+                .build();
+    }
+
+    public AdvancedStock toUser(AdvancedStockDTO advancedStockDTO) {
+
+        Optional<User> user = userRepository.findById(advancedStockDTO.getUserId());
+        Optional<Stock> stock = stockRepository.findById(advancedStockDTO.getStockId());
+
+        return AdvancedStock.builder()
+                .id(advancedStockDTO.getId())
+                .user(user.get())
+                .stock(stock.get())
+                .count(advancedStockDTO.getCount())
                 .build();
     }
 
