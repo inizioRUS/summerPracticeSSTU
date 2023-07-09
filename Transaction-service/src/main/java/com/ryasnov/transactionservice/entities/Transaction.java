@@ -1,6 +1,9 @@
 package com.ryasnov.transactionservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kishko.userservice.entities.AdvancedStock;
+import com.kishko.userservice.entities.Stock;
+import com.kishko.userservice.entities.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +25,6 @@ public class Transaction {
     private Long id;
     @Column(name = "type")
     private TypeTransaction type;
-   // private User user;
-   // private Stock stock;
+    private User user;
+    private AdvancedStock stock;
 }
