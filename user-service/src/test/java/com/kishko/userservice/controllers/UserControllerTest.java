@@ -3,6 +3,7 @@ package com.kishko.userservice.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.Role;
+import com.kishko.userservice.repositories.StockRepository;
 import com.kishko.userservice.services.UserServiceImpl;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -165,6 +166,46 @@ class UserControllerTest {
         when(userService.decreaseUserBalance(id, amount)).thenReturn(userDTO);
 
         ResultActions response = mockMvc.perform(put("/users/" + id + "/decBalance/" + amount)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDTO)));
+
+        response.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(userDTO.getName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email", CoreMatchers.is(userDTO.getEmail())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.balance", CoreMatchers.is(userDTO.getBalance())))
+                .andDo(MockMvcResultHandlers.print());
+
+    }
+
+    @Test
+    void addUserWishlistStock() throws Exception {
+
+        Long id = userDTO.getId();
+        Long stockId = 1L;
+
+        when(userService.addUserWishlistStock(id, stockId)).thenReturn(userDTO);
+
+        ResultActions response = mockMvc.perform(put("/users/" + id + "/wishlist/stock/" + stockId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDTO)));
+
+        response.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", CoreMatchers.is(userDTO.getName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.email", CoreMatchers.is(userDTO.getEmail())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.balance", CoreMatchers.is(userDTO.getBalance())))
+                .andDo(MockMvcResultHandlers.print());
+
+    }
+
+    @Test
+    void deleteUserWishlistStock() throws Exception {
+
+        Long id = userDTO.getId();
+        Long stockId = 1L;
+
+        when(userService.deleteUserWishlistStock(id, stockId)).thenReturn(userDTO);
+
+        ResultActions response = mockMvc.perform(delete("/users/" + id + "/wishlist/stock/" + stockId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userDTO)));
 

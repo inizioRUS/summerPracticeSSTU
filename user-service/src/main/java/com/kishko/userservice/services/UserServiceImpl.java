@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -167,6 +166,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException {
+
+        List<Stock> stocks;
+        UserDTO userDB = getUserById(userId);
+        Stock stock = stockRepository.findById(stockId).get();
+
+        stocks = userDB.getWishlist();
+
+        stocks.add(stock);
+        userDB.setWishlist(stocks);
+
+        userRepository.save(toUser(userDB));
+
+        return userDB;
+
+    }
+
+    @Override
+    public UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception {
+
+        List<Stock> stocks;
+        UserDTO userDB = getUserById(userId);
+        Stock stock = stockRepository.findById(stockId).get();
+
+        if (userDB.getWishlist().isEmpty()) {
+            throw new Exception("User with id: " + userId + " has an empty wishlist.");
+        }
+
+        stocks = userDB.getWishlist();
+
+        stocks.remove(stock);
+
+        userDB.setWishlist(stocks);
+
+        userRepository.save(toUser(userDB));
+
+        return userDB;
+
+    }
+
+    @Override
     public UserDTO increaseUserBalance(Long userId, Double amount) throws UserNotFoundException {
 
         UserDTO user = getUserById(userId);
@@ -207,6 +247,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .surname(user.getSurname())
                 .advancedStocks(user.getAdvancedStocks())
+                .wishlist(user.getWishlist())
                 .build();
     }
 
@@ -222,29 +263,7 @@ public class UserServiceImpl implements UserService {
                 .name(userDTO.getName())
                 .surname(userDTO.getSurname())
                 .advancedStocks(userDTO.getAdvancedStocks())
-                .build();
-    }
-
-    public AdvancedStockDTO toDTO(AdvancedStock advancedStock) {
-
-        return AdvancedStockDTO.builder()
-                .id(advancedStock.getId())
-                .userId(advancedStock.getUser().getId())
-                .stockId(advancedStock.getStock().getId())
-                .count(advancedStock.getCount())
-                .build();
-    }
-
-    public AdvancedStock toUser(AdvancedStockDTO advancedStockDTO) {
-
-        Optional<User> user = userRepository.findById(advancedStockDTO.getUserId());
-        Optional<Stock> stock = stockRepository.findById(advancedStockDTO.getStockId());
-
-        return AdvancedStock.builder()
-                .id(advancedStockDTO.getId())
-                .user(user.get())
-                .stock(stock.get())
-                .count(advancedStockDTO.getCount())
+                .wishlist(userDTO.getWishlist())
                 .build();
     }
 

@@ -2,12 +2,14 @@ package com.kishko.userservice.services;
 
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.Role;
+import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.repositories.AdvancedStockRepository;
 import com.kishko.userservice.repositories.StockRepository;
 import com.kishko.userservice.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,10 +45,18 @@ class UserServiceImplTest {
     private UserDTO userDTO;
     private UserDTO userDTO2;
 
+    private Stock stock;
+
     @BeforeEach
     void setUp() {
 
         userService = new UserServiceImpl(userRepository, advancedStockRepository, stockRepository);
+
+        stock = Stock.builder()
+                .id(1L)
+                .name("Газпром")
+                .price(1500.0)
+                .build();
 
         userDTO = UserDTO.builder()
                 .id(1L)
@@ -57,6 +67,7 @@ class UserServiceImplTest {
                 .role(Role.USER)
                 .balance(15000.0)
                 .advancedStocks(null)
+                .wishlist(List.of(stock, stock))
                 .build();
 
         userDTO2 = UserDTO.builder()
@@ -179,6 +190,51 @@ class UserServiceImplTest {
 
         assertThat(savedUser).isNotNull();
         assertEquals(savedUser.getBalance(), userDTO.getBalance() - amount);
+
+    }
+
+    @Test
+    @Disabled
+    void addUserWishlistStock() throws UserNotFoundException {
+
+        mock(UserDTO.class);
+        mock(UserRepository.class);
+        mock(StockRepository.class);
+        mock(Stock.class);
+        mock(UserServiceImpl.class);
+
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.ofNullable(toUser(userDTO)));
+        when(stockRepository.findById(stock.getId())).thenReturn(Optional.of(stock));
+
+        UserDTO savedUser = userService.addUserWishlistStock(userDTO.getId(), stock.getId());
+
+        System.out.println(savedUser);
+
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getWishlist()).isNotNull();
+
+    }
+
+    @Test
+    @Disabled
+    void deleteUserWishlistStock() throws Exception {
+
+        mock(UserDTO.class);
+        mock(UserRepository.class);
+        mock(StockRepository.class);
+        mock(Stock.class);
+
+        when(userRepository.findById(userDTO.getId())).thenReturn(Optional.of(toUser(userDTO)));
+        when(stockRepository.findById(stock.getId())).thenReturn(Optional.of(stock));
+
+        System.out.println(userDTO);
+
+        UserDTO savedUser = userService.deleteUserWishlistStock(userDTO.getId(), stock.getId());
+
+        System.out.println(savedUser);
+
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getWishlist()).isNotNull();
 
     }
 

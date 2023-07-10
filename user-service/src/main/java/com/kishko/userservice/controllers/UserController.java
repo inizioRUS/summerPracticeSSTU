@@ -54,6 +54,16 @@ public class UserController {
         return new ResponseEntity<>(userService.decreaseUserBalance(userId, amount), HttpStatus.OK);
     }
 
+    @PutMapping("/{userId}/wishlist/stock/{stockId}")
+    public ResponseEntity<UserDTO> addUserWishlistStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.addUserWishlistStock(userId, stockId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/wishlist/stock/{stockId}")
+    public ResponseEntity<UserDTO> deleteUserWishlistStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws Exception {
+        return new ResponseEntity<>(userService.deleteUserWishlistStock(userId, stockId), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") Long id) throws UserNotFoundException {
         return new ResponseEntity<>(userService.deleteUserById(id), HttpStatus.OK);

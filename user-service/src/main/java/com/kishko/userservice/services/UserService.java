@@ -29,4 +29,7 @@ public interface UserService {
 
     UserDTO deleteUserStocks(Long userId, Long stockId, Integer count) throws Exception;
 
+    UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException;
+
+    UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception;
 }
