@@ -1,19 +1,23 @@
 package com.kishko.authservice.repositories;
 
-import com.kishko.authservice.entities.Role;
-import com.kishko.authservice.entities.User;
+import com.kishko.userservice.entities.Role;
+import com.kishko.userservice.entities.User;
+import com.kishko.userservice.repositories.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+@EnableJpaRepositories(basePackages = "com.kishko.userservice.repositories")
+@EntityScan("com.kishko.userservice.entities")
 class UserRepositoryTest {
 
     @Autowired

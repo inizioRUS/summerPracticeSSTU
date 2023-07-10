@@ -1,15 +1,11 @@
 package com.kishko.userservice.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.Role;
-import com.kishko.userservice.entities.User;
-import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.services.UserServiceImpl;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

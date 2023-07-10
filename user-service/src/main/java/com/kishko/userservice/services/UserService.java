@@ -1,6 +1,5 @@
 package com.kishko.userservice.services;
 
-import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;

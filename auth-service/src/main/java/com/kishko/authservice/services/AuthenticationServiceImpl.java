@@ -1,7 +1,9 @@
 package com.kishko.authservice.services;
 
 import com.kishko.authservice.entities.*;
-import com.kishko.authservice.repositories.UserRepository;
+import com.kishko.userservice.entities.Role;
+import com.kishko.userservice.entities.User;
+import com.kishko.userservice.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         var user = User.builder()
+                .name(request.getName())
+                .surname(request.getSurname())
+                .balance(0.0)
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)

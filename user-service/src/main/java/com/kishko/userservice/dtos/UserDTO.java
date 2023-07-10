@@ -2,7 +2,6 @@ package com.kishko.userservice.dtos;
 
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Role;
-import com.kishko.userservice.entities.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
