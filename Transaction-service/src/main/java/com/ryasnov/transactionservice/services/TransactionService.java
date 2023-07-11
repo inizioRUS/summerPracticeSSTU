@@ -16,7 +16,7 @@ public interface TransactionService {
 
     Transaction toTransaction(TransactionDTO transactionDTO);
     TransactionDTO toDTO(Transaction transaction);
-
+    TransactionDTO createTransaction(TransactionDTO transactionDTO);
     List<TransactionDTO> getAllTransactions() throws TransactionNotFoundException;
 //    List<TransactionDTO> getAllByUser(User user) throws TransactionNotFoundException;
     List<TransactionDTO> getAllByStock(AdvancedStock stock) throws TransactionNotFoundException;

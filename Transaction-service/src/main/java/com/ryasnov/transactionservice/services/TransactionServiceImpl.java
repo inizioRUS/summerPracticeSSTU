@@ -47,6 +47,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public TransactionDTO createTransaction(TransactionDTO transactionDTO){
+        transactionRepository.save(toTransaction(transactionDTO));
+        return transactionDTO;
+    }
+    @Override
     public List<TransactionDTO> getAllTransactions() throws TransactionNotFoundException {
         return transactionRepository
                 .findAll()

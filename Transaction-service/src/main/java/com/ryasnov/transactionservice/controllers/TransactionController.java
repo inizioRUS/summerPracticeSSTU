@@ -24,6 +24,10 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
+    @PutMapping
+    public ResponseEntity<TransactionDTO> createTransaction(Transaction transaction){
+        return new ResponseEntity<>(transactionService.createTransaction(transactionService.toDTO(transaction)), HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<TransactionDTO>> gelAllTransactions() throws TransactionNotFoundException {
         return new ResponseEntity<>(transactionService.getAllTransactions(), HttpStatus.OK);
