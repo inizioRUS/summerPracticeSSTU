@@ -30,4 +30,9 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "advanced_stock_id")
     private AdvancedStock stock;
+
+    public Transaction(TypeTransaction type, AdvancedStock stock) {
+        this.type = type;
+        this.stock = stock;
+    }
 }

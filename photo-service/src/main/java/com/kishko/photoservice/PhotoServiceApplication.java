@@ -2,8 +2,6 @@ package com.kishko.photoservice;
 
 import com.kishko.photoservice.entities.Attachment;
 import com.kishko.photoservice.repositories.AttachmentRepository;
-import com.kishko.userservice.entities.User;
-import com.kishko.userservice.repositories.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

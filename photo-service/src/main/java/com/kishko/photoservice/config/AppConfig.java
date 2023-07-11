@@ -1,7 +1,5 @@
 package com.kishko.photoservice.config;
 
-import com.kishko.userservice.entities.User;
-import com.kishko.userservice.repositories.UserRepository;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
