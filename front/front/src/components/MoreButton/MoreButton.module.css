@@ -16,4 +16,5 @@
 
 .more_button:hover {
     cursor: pointer;
+    background-color: #E1E1E1;
 }

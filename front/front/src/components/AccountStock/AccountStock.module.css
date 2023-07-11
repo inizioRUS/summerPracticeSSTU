@@ -1,8 +1,9 @@
 .account_stock {
-    width: 486px;
+    width: 540px;
     height: 80px;
 
     border: none;
+    border-radius: 15px;
     background: none;
 
     display: flex;
@@ -18,6 +19,7 @@
 
 .account_stock:hover {
     cursor: pointer;
+    background-color: #F3F3F3;
 }
 
 .account_stock:focus {

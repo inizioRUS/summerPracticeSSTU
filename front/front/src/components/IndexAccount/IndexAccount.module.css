@@ -1,10 +1,10 @@
 .account {
     width: 597px;
-    height: 901px;
+    height: 840px;
 
     border-radius: 15px;
-    background: #FFF;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, #0084FF 0%, rgba(255, 255, 255, 0.00) 35%);
+    box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.25);
 
     display: flex;
     flex-direction: column;
@@ -17,7 +17,7 @@
     margin-top: 40px;
     margin-bottom: 10px;
     width: 540px;
-    color: #000;
+    color: #fff;
     font-size: 32px;
     font-style: normal;
     font-weight: 500;
@@ -28,7 +28,7 @@
 .money {
     margin: 10px;
     width: 540px;
-    color: #000;
+    color: #fff;
     font-size: 32px;
     font-style: normal;
     font-weight: 500;
@@ -93,7 +93,7 @@
     width: 30px;
     height: 30px;
 
-    transition: all 0.3s linear;
+    transition: all 100ms linear;
 }
 
 .function_icon:hover {
@@ -112,7 +112,7 @@
 .content {
     display: flex;
     flex-direction: column;
-    row-gap: 60px;
+    row-gap: 40px;
 
     margin-bottom: 50px;
 }
