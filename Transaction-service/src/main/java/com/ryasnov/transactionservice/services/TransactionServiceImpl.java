@@ -107,36 +107,40 @@ public class TransactionServiceImpl implements TransactionService {
     }
     //Преверсия
     @Override
-    public User buyingShare(User user, AdvancedStock stock) throws Exception {
-        userService.decreaseUserBalance(user.getId(), stock.getCount()*stock.getStock().getPrice());
-        UserDTO userDTO = userService.updateUserStocks(user.getId(), stock.getStock().getId(), stock.getCount());
+    public User buyingShare(AdvancedStock stock) throws Exception {
+        userService.decreaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
+        UserDTO userDTO = userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
         return userService.toUser(userDTO);
     }
 
     @Override
-    public User sellingShare(User user, AdvancedStock stock) throws Exception {
-        userService.increaseUserBalance(user.getId(), stock.getCount()*stock.getStock().getPrice());
-        UserDTO userDTO = userService.deleteUserStocks(user.getId(), stock.getStock().getId(), stock.getCount());
+    public User sellingShare(AdvancedStock stock) throws Exception {
+        userService.increaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
+        UserDTO userDTO = userService.deleteUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
         return userService.toUser(userDTO);
     }
 
-//    @Override
-//    public String addFavourites(User user, Stock stock) {
-//        return null;
-//    }
-//
-//    @Override
-//    public String deleteFavourites(User user, Stock stock) {
-//        return null;
-//    }
-//
-//    @Override
-//    public String withdrawal(User user, int total) {
-//        return null;
-//    }
-//
-//    @Override
-//    public String addOnAccount(User user, int total) {
-//        return null;
-//    }
+    @Override
+    public User addFavourites(User user, Stock stock) throws UserNotFoundException {
+        UserDTO userDTO = userService.addUserWishlistStock(user.getId(), stock.getId());
+        return userService.toUser(userDTO);
+    }
+
+    @Override
+    public User deleteFavourites(User user, Stock stock) throws Exception {
+        UserDTO userDTO = userService.deleteUserWishlistStock(user.getId(), stock.getId());
+        return userService.toUser(userDTO);
+    }
+
+    @Override
+    public User withdrawal(User user, Double total) throws Exception {
+        UserDTO userDTO = userService.decreaseUserBalance(user.getId(), total);
+        return userService.toUser(userDTO);
+    }
+
+    @Override
+    public User addOnAccount(User user, Double total) throws UserNotFoundException {
+        UserDTO userDTO = userService.increaseUserBalance(user.getId(), total);
+        return userService.toUser(userDTO);
+    }
 }
