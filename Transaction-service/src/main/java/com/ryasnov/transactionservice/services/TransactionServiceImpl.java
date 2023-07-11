@@ -1,8 +1,11 @@
 package com.ryasnov.transactionservice.services;
 
+import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.entities.User;
+import com.kishko.userservice.errors.UserNotFoundException;
+import com.kishko.userservice.repositories.AdvancedStockRepository;
 import com.kishko.userservice.services.UserService;
 import com.ryasnov.transactionservice.dtos.TransactionDTO;
 import com.ryasnov.transactionservice.entities.Transaction;
@@ -22,26 +25,25 @@ public class TransactionServiceImpl implements TransactionService {
     TransactionRepository transactionRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    AdvancedStockRepository advancedStockRepository;
+
     @Override
     public Transaction toTransaction(TransactionDTO transactionDTO) {
-//        return Transaction.builder()
-//                .id(transactionDTO.getId())
-//                .stock(transactionDTO.getStock())
-//                .user(transactionDTO.getUser())
-//                .type(transactionDTO.getType())
-//                .build();
-        return null;
+        return Transaction.builder()
+                .id(transactionDTO.getId())
+                .stock(advancedStockRepository.findById(transactionDTO.getStockId()).get())
+                .type(transactionDTO.getType())
+                .build();
     }
 
     @Override
     public TransactionDTO toDTO(Transaction transaction) {
-//        return TransactionDTO.builder()
-//                .id(transaction.getId())
-//                .stock(transaction.getStock())
-//                .user(transaction.getUser())
-//                .type(transaction.getType())
-//                .build();
-        return null;
+        return TransactionDTO.builder()
+                .id(transaction.getId())
+                .stockId(transaction.getStock().getId())
+                .type(transaction.getType())
+                .build();
     }
 
     @Override
@@ -104,26 +106,20 @@ public class TransactionServiceImpl implements TransactionService {
         return "Transaction has been deleted";
     }
     //Преверсия
-//    @Override
-//    public String buyingShare(User user, AdvancedStock stock) {
-//        if(stock.getStock().getPrice()*stock.getCount()> user.getBalance()){
-//            System.out.println("U have no such money on your balance");
-//            return null;
-//        }
-//        else{
-//            user.setBalance(user.getBalance()- stock.getStock().getPrice()*stock.getCount());
-//            user.getAdvancedStocks().add(stock);
-//        }
-//        return "null";
-//    }
-//
-//    @Override
-//    public String sellingShare(User user, AdvancedStock stock) {
-//        user.setBalance(user.getBalance()+ stock.getCount()*stock.getStock().getPrice());
-//        user.getAdvancedStocks().remove(stock);
-//        return "null";
-//    }
-//
+    @Override
+    public User buyingShare(User user, AdvancedStock stock) throws Exception {
+        userService.decreaseUserBalance(user.getId(), stock.getCount()*stock.getStock().getPrice());
+        UserDTO userDTO = userService.updateUserStocks(user.getId(), stock.getStock().getId(), stock.getCount());
+        return userService.toUser(userDTO);
+    }
+
+    @Override
+    public User sellingShare(User user, AdvancedStock stock) throws Exception {
+        userService.increaseUserBalance(user.getId(), stock.getCount()*stock.getStock().getPrice());
+        UserDTO userDTO = userService.deleteUserStocks(user.getId(), stock.getStock().getId(), stock.getCount());
+        return userService.toUser(userDTO);
+    }
+
 //    @Override
 //    public String addFavourites(User user, Stock stock) {
 //        return null;

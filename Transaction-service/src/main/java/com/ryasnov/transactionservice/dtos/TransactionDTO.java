@@ -19,6 +19,6 @@ import java.util.List;
 public class TransactionDTO {
     private Long id;
     private TypeTransaction type;
-    private Long stock_id;
+    private Long stockId;
 
 }

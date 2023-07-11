@@ -3,6 +3,7 @@ package com.ryasnov.transactionservice.services;
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.entities.User;
+import com.kishko.userservice.errors.UserNotFoundException;
 import com.ryasnov.transactionservice.dtos.TransactionDTO;
 import com.ryasnov.transactionservice.entities.Transaction;
 import com.ryasnov.transactionservice.entities.TypeTransaction;
@@ -22,8 +23,8 @@ public interface TransactionService {
     String updateTransactionById(Long id, Transaction transaction) throws TransactionNotFoundException;
     String deleteTransactionById(Long id) throws TransactionNotFoundException;
 
-//    String buyingShare(User user, AdvancedStock stock);
-//    String sellingShare(User user, AdvancedStock stock);
+    User buyingShare(User user, AdvancedStock stock) throws Exception;
+    User sellingShare(User user, AdvancedStock stock) throws Exception;
 //    String addFavourites(User user, Stock stock);
 //    String deleteFavourites(User user, Stock stock);
 //    String withdrawal(User user, int total);
