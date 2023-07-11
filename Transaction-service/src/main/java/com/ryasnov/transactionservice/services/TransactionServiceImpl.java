@@ -47,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> gelAllTransactions() throws TransactionNotFoundException {
+    public List<TransactionDTO> getAllTransactions() throws TransactionNotFoundException {
         return transactionRepository
                 .findAll()
                 .stream()
@@ -80,7 +80,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public String updateTransactionById(Long id, Transaction transaction) throws TransactionNotFoundException {
+    public TransactionDTO updateTransactionById(Long id, Transaction transaction) throws TransactionNotFoundException {
         Optional<Transaction> optionalTmp = transactionRepository.findById(id);
         Transaction tmp = optionalTmp.get();
 //        if(Objects.nonNull(transaction.getUser())){
@@ -93,7 +93,7 @@ public class TransactionServiceImpl implements TransactionService {
             tmp.setType(transaction.getType());
         }
         transactionRepository.save(tmp);
-        return "Transaction has been changed";
+        return toDTO(tmp);
     }
 
     @Override
@@ -107,40 +107,40 @@ public class TransactionServiceImpl implements TransactionService {
     }
     //Преверсия
     @Override
-    public User buyingShare(AdvancedStock stock) throws Exception {
+    public UserDTO buyingShare(AdvancedStock stock) throws Exception {
         userService.decreaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
-        UserDTO userDTO = userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
-        return userService.toUser(userDTO);
+        return userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+
     }
 
     @Override
-    public User sellingShare(AdvancedStock stock) throws Exception {
+    public UserDTO sellingShare(AdvancedStock stock) throws Exception {
         userService.increaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
-        UserDTO userDTO = userService.deleteUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
-        return userService.toUser(userDTO);
+        return userService.deleteUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+       // return userService.toUser(userDTO);
     }
 
     @Override
-    public User addFavourites(User user, Stock stock) throws UserNotFoundException {
-        UserDTO userDTO = userService.addUserWishlistStock(user.getId(), stock.getId());
-        return userService.toUser(userDTO);
+    public UserDTO addFavourites(User user, Stock stock) throws UserNotFoundException {
+        return userService.addUserWishlistStock(user.getId(), stock.getId());
+
     }
 
     @Override
-    public User deleteFavourites(User user, Stock stock) throws Exception {
-        UserDTO userDTO = userService.deleteUserWishlistStock(user.getId(), stock.getId());
-        return userService.toUser(userDTO);
+    public UserDTO deleteFavourites(User user, Stock stock) throws Exception {
+        return userService.deleteUserWishlistStock(user.getId(), stock.getId());
+
     }
 
     @Override
-    public User withdrawal(User user, Double total) throws Exception {
-        UserDTO userDTO = userService.decreaseUserBalance(user.getId(), total);
-        return userService.toUser(userDTO);
+    public UserDTO withdrawal(User user, Double total) throws Exception {
+        return userService.decreaseUserBalance(user.getId(), total);
+
     }
 
     @Override
-    public User addOnAccount(User user, Double total) throws UserNotFoundException {
-        UserDTO userDTO = userService.increaseUserBalance(user.getId(), total);
-        return userService.toUser(userDTO);
+    public UserDTO addOnAccount(User user, Double total) throws UserNotFoundException {
+        return userService.increaseUserBalance(user.getId(), total);
+
     }
 }
