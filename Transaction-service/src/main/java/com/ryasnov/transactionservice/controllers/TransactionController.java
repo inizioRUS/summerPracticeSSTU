@@ -24,7 +24,7 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<TransactionDTO> createTransaction(Transaction transaction){
         return new ResponseEntity<>(transactionService.createTransaction(transactionService.toDTO(transaction)), HttpStatus.OK);
     }
