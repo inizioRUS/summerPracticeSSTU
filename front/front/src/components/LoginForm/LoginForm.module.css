@@ -1,0 +1,117 @@
+.container {
+    width: 400px;
+    height: 720px;
+
+    border-radius: 15px;
+    background: linear-gradient(180deg, rgba(0, 132, 255, 0.80) 0%, rgba(255, 255, 255, 0.80) 100%);
+    box-shadow: 0px 20px 20px 0px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    font-family: 'Open Sans', sans-serif;
+}
+
+.form {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.heading {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.input {
+    width: 252px;
+    height: 50px;
+
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.60);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    color: #0084FF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    transition: linear 0.3s;
+}
+
+.input::placeholder {
+    color: #0084FF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.input:focus{
+    outline: none;
+    background: rgba(255, 255, 255, 1);
+}
+
+.input:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+.login {
+    width: 252px;
+    height: 50px;
+
+    border: none;
+    border-radius: 15px;
+    background: rgba(0, 132, 255, 0.70);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    color: #FFF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transition: linear 0.3s;
+}
+
+.login:focus {
+    outline: none;
+}
+
+.login:hover {
+    cursor: pointer;
+    background: rgba(0, 132, 255, 1);
+}
+
+.signup {
+    width: 252px;
+    height: 50px;
+
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.60);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    color: #0084FF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.signup:focus {
+    outline: none;
+}
+
+.signup:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 1);
+}
