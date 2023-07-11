@@ -32,4 +32,6 @@ public class UserDTO {
 
     private List<AdvancedStock> advancedStocks;
 
+    private List<Stock> wishlist;
+
 }

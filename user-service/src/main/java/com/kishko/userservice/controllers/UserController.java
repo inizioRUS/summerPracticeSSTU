@@ -1,6 +1,5 @@
 package com.kishko.userservice.controllers;
 
-import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.services.UserService;
@@ -53,6 +52,16 @@ public class UserController {
     @PutMapping("/{userId}/decBalance/{amount}")
     public ResponseEntity<UserDTO> decreaseUserBalance(@PathVariable("userId") Long userId, @PathVariable("amount") Double amount) throws Exception {
         return new ResponseEntity<>(userService.decreaseUserBalance(userId, amount), HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/wishlist/stock/{stockId}")
+    public ResponseEntity<UserDTO> addUserWishlistStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.addUserWishlistStock(userId, stockId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/wishlist/stock/{stockId}")
+    public ResponseEntity<UserDTO> deleteUserWishlistStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws Exception {
+        return new ResponseEntity<>(userService.deleteUserWishlistStock(userId, stockId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

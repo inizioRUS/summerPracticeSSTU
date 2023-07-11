@@ -2,12 +2,11 @@ package com.kishko.userservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.util.List;
+import java.util.Objects;
 
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
@@ -15,7 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Table(name = "stocks")
 public class Stock {
 
@@ -31,6 +32,24 @@ public class Stock {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "stock")
+    @ToString.Exclude
     private List<AdvancedStock> advancedStocks;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishlist")
+    @ToString.Exclude
+    private List<User> users;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Stock stock = (Stock) o;
+        return id != null && Objects.equals(id, stock.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

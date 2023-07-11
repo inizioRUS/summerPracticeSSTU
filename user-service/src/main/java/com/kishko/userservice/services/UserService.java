@@ -1,6 +1,5 @@
 package com.kishko.userservice.services;
 
-import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
@@ -30,4 +29,7 @@ public interface UserService {
 
     UserDTO deleteUserStocks(Long userId, Long stockId, Integer count) throws Exception;
 
+    UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException;
+
+    UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception;
 }
