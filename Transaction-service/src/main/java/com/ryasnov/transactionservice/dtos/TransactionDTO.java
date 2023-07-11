@@ -19,7 +19,6 @@ import java.util.List;
 public class TransactionDTO {
     private Long id;
     private TypeTransaction type;
-    private User user;
-    private AdvancedStock stock;
+    private Long stock_id;
 
 }

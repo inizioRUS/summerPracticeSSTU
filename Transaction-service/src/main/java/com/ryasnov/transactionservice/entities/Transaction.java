@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,12 +20,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Builder
 @Data
 @Table(name = "transactions")
+//@EntityScan(basePackageClasses = {AdvancedStock.class, Transaction.class})
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "type")
     private TypeTransaction type;
-    private User user;
+    @ManyToOne
+    @JoinColumn(name = "advanced_stock_id")
     private AdvancedStock stock;
 }
