@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -62,6 +63,11 @@ public class UserController {
     @DeleteMapping("/{userId}/wishlist/stock/{stockId}")
     public ResponseEntity<UserDTO> deleteUserWishlistStock(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId) throws Exception {
         return new ResponseEntity<>(userService.deleteUserWishlistStock(userId, stockId), HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/change/photo")
+    public ResponseEntity<UserDTO> changeUserPhoto(@PathVariable("userId") Long userId, @RequestParam("photo") MultipartFile photo) throws Exception {
+        return new ResponseEntity<>(userService.changeUserPhoto(userId, photo), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

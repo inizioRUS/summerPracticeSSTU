@@ -20,16 +20,16 @@ public class AttachmentController {
     @Autowired
     private AttachmentService attachmentService;
 
-    @PostMapping("/upload")
-    public ResponseData uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+    @PostMapping("/upload/user/{userId}")
+    public ResponseData uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("userId") Long userId) throws Exception {
 
         Attachment attachment = null;
         String downloadURL = "";
 
-        attachment = attachmentService.saveAttachment(file);
+        attachment = attachmentService.saveAttachment(file, userId);
 
         downloadURL = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
+                .path("/attachments/download/")
                 .path(attachment.getId())
                 .toUriString();
 

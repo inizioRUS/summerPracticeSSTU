@@ -1,6 +1,7 @@
 package com.kishko.userservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kishko.photoservice.entities.Attachment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -9,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @AllArgsConstructor
@@ -21,7 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 @ToString
 @Table(name = "users")
-public class User implements UserDetails {
+//public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,41 +60,45 @@ public class User implements UserDetails {
     @ToString.Exclude
     private List<Stock> wishlist;
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "attachment_id", referencedColumnName = "id")
+    private Attachment attachment;
 
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+//    @JsonIgnore
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of(new SimpleGrantedAuthority(role.name()));
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public String getUsername() {
+//        return email;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
 
     @Override
     public boolean equals(Object o) {

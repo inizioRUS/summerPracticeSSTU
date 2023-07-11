@@ -1,5 +1,7 @@
 package com.kishko.userservice.services;
 
+import com.kishko.photoservice.repositories.AttachmentRepository;
+import com.kishko.photoservice.services.AttachmentService;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.Role;
 import com.kishko.userservice.entities.Stock;
@@ -39,6 +41,12 @@ class UserServiceImplTest {
     @Mock
     private StockRepository stockRepository;
 
+    @Mock
+    private AttachmentRepository attachmentRepository;
+
+    @Mock
+    private AttachmentService attachmentService;
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -50,7 +58,7 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        userService = new UserServiceImpl(userRepository, advancedStockRepository, stockRepository);
+        userService = new UserServiceImpl(userRepository, advancedStockRepository, stockRepository, attachmentRepository, attachmentService);
 
         stock = Stock.builder()
                 .id(1L)

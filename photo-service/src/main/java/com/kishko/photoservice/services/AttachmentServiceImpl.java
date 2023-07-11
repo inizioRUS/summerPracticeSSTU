@@ -2,7 +2,11 @@ package com.kishko.photoservice.services;
 
 import com.kishko.photoservice.entities.Attachment;
 import com.kishko.photoservice.repositories.AttachmentRepository;
+import com.kishko.userservice.entities.User;
+import com.kishko.userservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +20,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentRepository attachmentRepository;
 
     @Override
-    public Attachment saveAttachment(MultipartFile file) throws Exception {
+    public Attachment saveAttachment(MultipartFile file, Long userId) throws Exception {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
@@ -26,12 +30,18 @@ public class AttachmentServiceImpl implements AttachmentService {
                 throw new Exception("Filename contains invalid path sequence " + fileName);
             }
 
-            Attachment attachment = new Attachment(fileName, file.getContentType(), file.getBytes());
+            Attachment attachment = Attachment
+                    .builder()
+                    .fileType(file.getContentType())
+                    .data(file.getBytes())
+                    .fileName(file.getOriginalFilename())
+                    .userId(userId)
+                    .build();
 
             return attachmentRepository.save(attachment);
 
         } catch (Exception e) {
-            throw new Exception("Couldn't save a file " + fileName);
+            throw new Exception("Couldn't save a file " + fileName + " \n " + e);
         }
 
     }

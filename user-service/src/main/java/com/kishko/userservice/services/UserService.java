@@ -3,6 +3,7 @@ package com.kishko.userservice.services;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,4 +33,7 @@ public interface UserService {
     UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException;
 
     UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception;
+
+    UserDTO changeUserPhoto(Long userId, MultipartFile photo) throws Exception;
+
 }

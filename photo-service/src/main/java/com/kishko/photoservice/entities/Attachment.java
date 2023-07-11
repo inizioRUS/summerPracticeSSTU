@@ -1,10 +1,9 @@
 package com.kishko.photoservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kishko.userservice.entities.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -20,16 +19,16 @@ public class Attachment {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
+    @Column(name = "fileName")
     private String fileName;
 
+    @Column(name = "fileType")
     private String fileType;
 
     @Lob
     private byte[] data;
 
-    public Attachment(String fileName, String fileType, byte[] data) {
-        this.fileName = fileName;
-        this.fileType = fileType;
-        this.data = data;
-    }
+    @Column(name = "userId")
+    private Long userId;
+
 }

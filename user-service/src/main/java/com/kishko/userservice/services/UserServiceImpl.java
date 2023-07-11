@@ -1,5 +1,8 @@
 package com.kishko.userservice.services;
 
+import com.kishko.photoservice.entities.Attachment;
+import com.kishko.photoservice.repositories.AttachmentRepository;
+import com.kishko.photoservice.services.AttachmentService;
 import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.AdvancedStock;
@@ -9,11 +12,13 @@ import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.repositories.AdvancedStockRepository;
 import com.kishko.userservice.repositories.StockRepository;
 import com.kishko.userservice.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +36,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private StockRepository stockRepository;
+    @Autowired
+    private AttachmentRepository attachmentRepository;
+
+    @Autowired
+    private AttachmentService attachmentService;
 
     @Override
     public List<UserDTO> getAllUsers() {
@@ -75,9 +85,9 @@ public class UserServiceImpl implements UserService {
             userDB.setEmail(email);
         }
 
-        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
-            userDB.setPassword(new BCryptPasswordEncoder().encode(password));
-        }
+//        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
+//            userDB.setPassword(new BCryptPasswordEncoder().encode(password));
+//        }
 
         if (Objects.nonNull(name) && !"".equalsIgnoreCase(name)) {
             userDB.setName(name);
@@ -207,6 +217,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public UserDTO changeUserPhoto(Long userId, MultipartFile photo) throws Exception {
+
+        UserDTO userDTO = getUserById(userId);
+        Attachment attachment;
+
+        if (photo.getSize() != 0) {
+
+            if (!userDTO.getAttachmentId().equals("a9a735f5-ec07-4ca6-90e2-852ab63318a7")) attachmentRepository.deleteAttachmentByUserId(userDTO.getId());
+
+            attachment = attachmentService.saveAttachment(photo, userId);
+
+            userDTO.setAttachmentId(attachment.getId());
+
+            userRepository.save(toUser(userDTO));
+
+        }
+
+        return userDTO;
+    }
+
+    @Override
     public UserDTO increaseUserBalance(Long userId, Double amount) throws UserNotFoundException {
 
         UserDTO user = getUserById(userId);
@@ -238,6 +270,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO toDTO(User user) {
 
+        String attachmentId;
+
+        if (user.getAttachment() == null) {
+            attachmentId = "a9a735f5-ec07-4ca6-90e2-852ab63318a7";
+        } else attachmentId = user.getAttachment().getId();
+
         return UserDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -248,11 +286,16 @@ public class UserServiceImpl implements UserService {
                 .surname(user.getSurname())
                 .advancedStocks(user.getAdvancedStocks())
                 .wishlist(user.getWishlist())
+                .attachmentId(attachmentId)
                 .build();
     }
 
     @Override
     public User toUser(UserDTO userDTO) {
+
+        Attachment attachment = attachmentRepository.findById(userDTO.getAttachmentId()).orElse(
+                attachmentRepository.findById("a9a735f5-ec07-4ca6-90e2-852ab63318a7").get()
+        ); // НА ВСЯКИЙ СЛУЧАЙ
 
         return User.builder()
                 .id(userDTO.getId())
@@ -264,6 +307,7 @@ public class UserServiceImpl implements UserService {
                 .surname(userDTO.getSurname())
                 .advancedStocks(userDTO.getAdvancedStocks())
                 .wishlist(userDTO.getWishlist())
+                .attachment(attachment)
                 .build();
     }
 
