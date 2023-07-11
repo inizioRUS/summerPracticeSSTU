@@ -47,4 +47,10 @@ public class AdvancedStock {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public AdvancedStock(Stock stock, User user, Integer count) {
+        this.stock = stock;
+        this.user = user;
+        this.count = count;
+    }
 }
