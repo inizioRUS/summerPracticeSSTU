@@ -3,7 +3,6 @@ package com.kishko.userservice.services;
 import com.kishko.photoservice.entities.Attachment;
 import com.kishko.photoservice.repositories.AttachmentRepository;
 import com.kishko.photoservice.services.AttachmentService;
-import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Stock;
