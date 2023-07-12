@@ -19,8 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableJpaRepositories(basePackages = "com.kishko.userservice.repositories")
-@EntityScan("com.kishko.userservice.entities")
+@EnableJpaRepositories(basePackages = {"com.kishko.userservice.repositories", "com.kishko.photoservice.repositories"})
+@EntityScan({"com.kishko.userservice.entities", "com.kishko.photoservice.entities"})
 public class AppConfig {
 
     @Autowired

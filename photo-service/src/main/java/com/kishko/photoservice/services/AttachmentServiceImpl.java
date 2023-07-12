@@ -3,8 +3,6 @@ package com.kishko.photoservice.services;
 import com.kishko.photoservice.entities.Attachment;
 import com.kishko.photoservice.repositories.AttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
