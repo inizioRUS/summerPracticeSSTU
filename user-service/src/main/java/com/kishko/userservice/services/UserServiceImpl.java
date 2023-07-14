@@ -306,7 +306,7 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getAttachmentId() != null) {
 
             attachment = attachmentRepository.findById(userDTO.getAttachmentId()).orElse(
-                    attachmentRepository.findById("85d5fa01-01b6-4946-ba58-0f7f99e552ba").get()
+                    null
             ); // НА ВСЯКИЙ СЛУЧАЙ
 
         }
