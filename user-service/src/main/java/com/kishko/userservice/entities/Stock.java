@@ -1,6 +1,7 @@
 package com.kishko.userservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kishko.photoservice.entities.Attachment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -31,7 +32,7 @@ public class Stock {
     private Double price;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stock")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AdvancedStock> advancedStocks;
 
@@ -39,6 +40,9 @@ public class Stock {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishlist")
     @ToString.Exclude
     private List<User> users;
+
+    @Column(name = "attachmentId")
+    private String attachmentId;
 
     @Override
     public boolean equals(Object o) {

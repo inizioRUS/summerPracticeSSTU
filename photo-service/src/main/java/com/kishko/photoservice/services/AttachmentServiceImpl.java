@@ -16,7 +16,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private AttachmentRepository attachmentRepository;
 
     @Override
-    public Attachment saveAttachment(MultipartFile file, Long userId) throws Exception {
+    public Attachment saveAttachment(MultipartFile file) throws Exception {
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
@@ -31,7 +31,6 @@ public class AttachmentServiceImpl implements AttachmentService {
                     .fileType(file.getContentType())
                     .data(file.getBytes())
                     .fileName(file.getOriginalFilename())
-                    .userId(userId)
                     .build();
 
             return attachmentRepository.save(attachment);

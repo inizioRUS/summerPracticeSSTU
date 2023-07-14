@@ -4,7 +4,7 @@ import com.kishko.photoservice.entities.Attachment;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AttachmentService {
-    Attachment saveAttachment(MultipartFile file, Long userId) throws Exception;
+    Attachment saveAttachment(MultipartFile file) throws Exception;
 
     Attachment getAttachment(String fileId) throws Exception;
 }

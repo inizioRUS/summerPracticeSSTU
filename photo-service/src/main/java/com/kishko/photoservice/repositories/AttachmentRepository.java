@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, String> {
 
-    void deleteAttachmentByUserId(Long userId);
+//    void deleteAttachmentByUserId(Long userId);
 
 }

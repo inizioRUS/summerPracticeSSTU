@@ -158,6 +158,8 @@ public class UserServiceImpl implements UserService {
 
         int currentCount = advancedStockDB.getCount();
 
+        if (currentCount - count < 0) throw new Exception("User hasn't such amount of stocks");
+
         advancedStockDB.setCount(currentCount - count);
 
         if (advancedStockDB.getCount() == 0) {
@@ -224,9 +226,11 @@ public class UserServiceImpl implements UserService {
 
         if (photo.getSize() != 0) {
 
-            if (!userDTO.getAttachmentId().equals("a9a735f5-ec07-4ca6-90e2-852ab63318a7")) attachmentRepository.deleteAttachmentByUserId(userDTO.getId());
+            if (!"a9a735f5-ec07-4ca6-90e2-852ab63318a7".equals(userDTO.getAttachmentId()) && userDTO.getAttachmentId() != null) {
+                attachmentRepository.deleteById(userDTO.getAttachmentId());
+            }
 
-            attachment = attachmentService.saveAttachment(photo, userId);
+            attachment = attachmentService.saveAttachment(photo);
 
             userDTO.setAttachmentId(attachment.getId());
 
@@ -246,6 +250,8 @@ public class UserServiceImpl implements UserService {
 
         user.setBalance(balance + amount);
 
+        userRepository.save(toUser(user));
+
         return user;
     }
 
@@ -263,6 +269,8 @@ public class UserServiceImpl implements UserService {
             throw new Exception("This user haven't quite amount of money to confirm payment");
         }
 
+        userRepository.save(toUser(user));
+
         return user;
     }
 
@@ -272,7 +280,7 @@ public class UserServiceImpl implements UserService {
         String attachmentId;
 
         if (user.getAttachment() == null) {
-            attachmentId = "a9a735f5-ec07-4ca6-90e2-852ab63318a7";
+            attachmentId = null;
         } else attachmentId = user.getAttachment().getId();
 
         return UserDTO.builder()
@@ -292,9 +300,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User toUser(UserDTO userDTO) {
 
-        Attachment attachment = attachmentRepository.findById(userDTO.getAttachmentId()).orElse(
-                attachmentRepository.findById("a9a735f5-ec07-4ca6-90e2-852ab63318a7").get()
-        ); // НА ВСЯКИЙ СЛУЧАЙ
+
+        Attachment attachment = null;
+
+        if (userDTO.getAttachmentId() != null) {
+
+            attachment = attachmentRepository.findById(userDTO.getAttachmentId()).orElse(
+                    attachmentRepository.findById("85d5fa01-01b6-4946-ba58-0f7f99e552ba").get()
+            ); // НА ВСЯКИЙ СЛУЧАЙ
+
+        }
 
         return User.builder()
                 .id(userDTO.getId())

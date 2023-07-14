@@ -1,5 +1,6 @@
 package com.kishko.userservice.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Role;
 import com.kishko.userservice.entities.Stock;
