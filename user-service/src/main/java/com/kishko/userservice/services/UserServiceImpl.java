@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,9 +84,9 @@ public class UserServiceImpl implements UserService {
             userDB.setEmail(email);
         }
 
-        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
-            userDB.setPassword(new BCryptPasswordEncoder().encode(password));
-        }
+//        if (Objects.nonNull(password) && !"".equalsIgnoreCase(password)) {
+//            userDB.setPassword(new BCryptPasswordEncoder().encode(password));
+//        }
 
         if (Objects.nonNull(name) && !"".equalsIgnoreCase(name)) {
             userDB.setName(name);
