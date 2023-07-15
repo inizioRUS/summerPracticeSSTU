@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://84.38.183.185:5432/postgres
+    username: postgres
+    password: postfres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show_sql: true
+  main:
+    web-application-type: servlet
+    allow-bean-definition-overriding: true
+
+  security:
+    user:
+      name: dima
+      password: 123

@@ -13,9 +13,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableJpaRepositories(basePackages = {"com.kishko.userservice.repositories","com.ryasnov.transactionservice.repositories"})
-@EntityScan(basePackages = {"com.kishko.userservice.entities", "com.ryasnov.transactionservice.entities"})
-@ComponentScan({"com.kishko.userservice.services"})
+@EnableJpaRepositories(basePackages = {"com.kishko.userservice.repositories","com.ryasnov.transactionservice.repositories", "com.kishko.photoservice.repositories"})
+@EntityScan(basePackages = {"com.kishko.userservice.entities", "com.ryasnov.transactionservice.entities", "com.kishko.photoservice.entities"})
+@ComponentScan({"com.kishko.userservice.services","com.kishko.photoservice.services"})
+
 public class AppConfig {
     @Autowired
     private UserRepository userRepository;
