@@ -21,4 +21,6 @@ public class AdvancedStockDTO {
 
     private Integer count;
 
+    private Double buyPrice;
+
 }

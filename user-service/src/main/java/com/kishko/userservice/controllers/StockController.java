@@ -2,7 +2,6 @@ package com.kishko.userservice.controllers;
 
 import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.StockDTO;
-import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.services.StockService;
@@ -88,6 +87,14 @@ public class StockController {
     )
     public ResponseEntity<StockDTO> changeStockPhoto(@PathVariable("stockId") Long stockId, @RequestParam("photo") MultipartFile photo) throws Exception {
         return new ResponseEntity<>(stockService.changeStockPhoto(stockId, photo), HttpStatus.OK);
+    }
+
+    @GetMapping("/profit/advancedStock/{advancedStockId}")
+    @Operation(
+            summary = "Получить прибыль AdvancedStock по ее ID"
+    )
+    public ResponseEntity<Double> getProfitByAdvancedStockId(@PathVariable("advancedStockId") Long advancedStockId) throws Exception {
+        return new ResponseEntity<>(stockService.getProfitByAdvancedStockId(advancedStockId), HttpStatus.OK);
     }
 
 }

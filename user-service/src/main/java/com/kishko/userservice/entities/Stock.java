@@ -1,7 +1,6 @@
 package com.kishko.userservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kishko.photoservice.entities.Attachment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;

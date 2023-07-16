@@ -120,13 +120,21 @@ public class UserController {
 
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
-    @DeleteMapping("/{userId}/stock/{stockId}/{count}")
+    @DeleteMapping("/{userId}/stock/{advancedStockId}/{count}")
     @Operation(
             summary = "Удаление акций юзера при продаже",
-            description = "Для реализации необходимо передать в URL ID пользователя, ID акции (Stock) и количество."
+            description = "Для реализации необходимо передать в URL ID пользователя, ID акции (AdvancedStock) и количество."
     )
-    public ResponseEntity<UserDTO> deleteUserStocks(@PathVariable("userId") Long userId, @PathVariable("stockId") Long stockId, @PathVariable("count") Integer count) throws Exception {
+    public ResponseEntity<UserDTO> deleteUserStocks(@PathVariable("userId") Long userId, @PathVariable("advancedStockId") Long stockId, @PathVariable("count") Integer count) throws Exception {
         return new ResponseEntity<>(userService.deleteUserStocks(userId, stockId, count), HttpStatus.OK);
+    }
+
+    @GetMapping("/profit/user/{userId}")
+    @Operation(
+            summary = "Получить прибыль юзера по его ID"
+    )
+    public ResponseEntity<Double> getProfitByUserId(@PathVariable("userId") Long userId) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getProfitByUserId(userId), HttpStatus.OK);
     }
 
 }

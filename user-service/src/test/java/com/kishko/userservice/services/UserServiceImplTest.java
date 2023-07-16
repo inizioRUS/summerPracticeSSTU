@@ -47,6 +47,9 @@ class UserServiceImplTest {
     @Mock
     private AttachmentService attachmentService;
 
+    @Mock
+    private StockService stockService;
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -58,7 +61,7 @@ class UserServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        userService = new UserServiceImpl(userRepository, advancedStockRepository, stockRepository, attachmentRepository, attachmentService);
+        userService = new UserServiceImpl(userRepository, advancedStockRepository, stockRepository, attachmentRepository, attachmentService, stockService);
 
         stock = Stock.builder()
                 .id(1L)

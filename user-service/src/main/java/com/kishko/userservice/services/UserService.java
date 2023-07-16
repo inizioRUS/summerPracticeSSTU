@@ -36,4 +36,6 @@ public interface UserService {
 
     UserDTO changeUserPhoto(Long userId, MultipartFile photo) throws Exception;
 
+    Double getProfitByUserId(Long userId) throws UserNotFoundException;
+
 }

@@ -1,10 +1,8 @@
 package com.kishko.userservice.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kishko.photoservice.entities.Attachment;
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.User;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;

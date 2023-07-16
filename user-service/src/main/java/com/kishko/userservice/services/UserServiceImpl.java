@@ -3,6 +3,7 @@ package com.kishko.userservice.services;
 import com.kishko.photoservice.entities.Attachment;
 import com.kishko.photoservice.repositories.AttachmentRepository;
 import com.kishko.photoservice.services.AttachmentService;
+import com.kishko.userservice.dtos.AdvancedStockDTO;
 import com.kishko.userservice.dtos.UserDTO;
 import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Stock;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AttachmentService attachmentService;
+
+    @Autowired
+    private StockService stockService;
 
     @Override
     public List<UserDTO> getAllUsers() {
@@ -120,25 +124,30 @@ public class UserServiceImpl implements UserService {
 
         UserDTO user = getUserById(userId);
 
-        AdvancedStock advancedStockDB = advancedStock.getAdvancedStockByUserIdAndStockId(userId, stockId);
+        Stock stock = stockService.toStock(stockService.getStockById(stockId));
 
-        if (advancedStockDB == null) {
+        AdvancedStock advancedStockDB = AdvancedStock.builder()
+                .count(count)
+                .stock(stock)
+                .user(toUser(user))
+                .buyPrice(stock.getPrice())
+                .build();
 
-            advancedStockDB = AdvancedStock.builder()
-                    .count(0)
-                    .stock(stockRepository.findById(stockId).orElseThrow(
-                            () -> new Exception("There is no such stock with id: " + stockId)
-                    ))
-                    .user(userRepository.findById(userId).orElseThrow(
-                            () -> new Exception("There is no such user with id: " + userId)
-                    ))
-                    .build();
+        if (stockService.getAdvancedStocksByUserId(userId) != null) {
+            for (AdvancedStockDTO stocks : stockService.getAdvancedStocksByUserId(userId)) {
+                if (Objects.equals(stocks.getStockId(), stockId) && stocks.getBuyPrice().equals(advancedStockDB.getBuyPrice())) {
 
+                    int currentCount = stocks.getCount();
+
+                    stocks.setCount(currentCount + advancedStockDB.getCount());
+
+                    advancedStock.save(stockService.toAdvancedStock(stocks));
+
+                    return user;
+
+                }
+            }
         }
-
-        int currentCount = advancedStockDB.getCount();
-
-        advancedStockDB.setCount(currentCount + count);
 
         advancedStock.save(advancedStockDB);
 
@@ -148,11 +157,13 @@ public class UserServiceImpl implements UserService {
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
     @Override
-    public UserDTO deleteUserStocks(Long userId, Long stockId, Integer count) throws Exception {
+    public UserDTO deleteUserStocks(Long userId, Long advancedStockId, Integer count) throws Exception {
 
         UserDTO user = getUserById(userId);
 
-        AdvancedStock advancedStockDB = advancedStock.getAdvancedStockByUserIdAndStockId(userId, stockId);
+        AdvancedStock advancedStockDB = advancedStock.findById(advancedStockId).orElseThrow(
+                () -> new Exception("There is no such advancedStock")
+        );
 
         if (advancedStockDB == null) throw new Exception("There is no such advancedStock");
 
@@ -272,6 +283,22 @@ public class UserServiceImpl implements UserService {
         userRepository.save(toUser(user));
 
         return user;
+    }
+
+    @Override
+    public Double getProfitByUserId(Long userId) throws UserNotFoundException {
+
+        double profit = 0.0;
+        UserDTO user = getUserById(userId);
+
+        for (AdvancedStock advancedStock : user.getAdvancedStocks()) {
+
+            profit += (advancedStock.getStock().getPrice() - advancedStock.getBuyPrice()) * advancedStock.getCount();
+
+        }
+
+        return profit;
+
     }
 
     @Override

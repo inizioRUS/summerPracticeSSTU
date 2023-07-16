@@ -3,9 +3,6 @@ package com.kishko.userservice.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.Hibernate;
-
-import java.util.Objects;
 
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
@@ -13,9 +10,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
-@Setter
-@ToString
+@Data
 @Table(name = "advancedStocks")
 public class AdvancedStock {
 
@@ -35,18 +30,8 @@ public class AdvancedStock {
     @Column(name = "count")
     private Integer count;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AdvancedStock that = (AdvancedStock) o;
-        return id != null && Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+    @Column(name = "buyPrice")
+    private Double buyPrice;
 
     public AdvancedStock(Stock stock, User user, Integer count) {
         this.stock = stock;

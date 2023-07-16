@@ -33,4 +33,6 @@ public interface StockService {
     Stock toStock(StockDTO stockDTO);
 
     StockDTO toDTO(Stock stock);
+
+    Double getProfitByAdvancedStockId(Long advancedStockId) throws Exception;
 }

@@ -1,6 +1,5 @@
 package com.kishko.userservice.services;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.kishko.photoservice.entities.Attachment;
 import com.kishko.photoservice.repositories.AttachmentRepository;
 import com.kishko.photoservice.services.AttachmentService;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -134,9 +132,20 @@ public class StockServiceImpl implements StockService {
             throw new UserNotFoundException("There is no stock with id: " + stockId);
         }
 
-        userRepository.deleteById(stockId);
+        stockRepository.deleteById(stockId);
 
         return "successful deleted";
+    }
+
+    @Override
+    public Double getProfitByAdvancedStockId(Long advancedStockId) throws Exception {
+
+        AdvancedStock advancedStock1 = advancedStockRepository.findById(advancedStockId).orElseThrow(
+                () -> new Exception("There is no such AdvancedStock with id: " + advancedStockId)
+        );
+
+        return (advancedStock1.getStock().getPrice() - advancedStock1.getBuyPrice()) * advancedStock1.getCount();
+
     }
 
     @Override
@@ -152,6 +161,7 @@ public class StockServiceImpl implements StockService {
                 .stock(toStock(stock))
                 .user(user)
                 .count(advancedStockDTO.getCount())
+                .buyPrice(advancedStockDTO.getBuyPrice())
                 .build();
     }
 
@@ -162,6 +172,7 @@ public class StockServiceImpl implements StockService {
                 .stockId(advancedStock.getStock().getId())
                 .userId(advancedStock.getUser().getId())
                 .count(advancedStock.getCount())
+                .buyPrice(advancedStock.getBuyPrice())
                 .build();
     }
 

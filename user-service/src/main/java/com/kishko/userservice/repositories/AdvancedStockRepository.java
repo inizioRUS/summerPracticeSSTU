@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface AdvancedStockRepository extends JpaRepository<AdvancedStock, Long> {
 
-    AdvancedStock getAdvancedStockByUserIdAndStockId(Long user_id, Long stock_id);
-
     List<AdvancedStock> findAdvancedStocksByUserId(Long user_id);
 
 }
