@@ -117,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService {
     public UserDTO buyingShare(AdvancedStock stock) throws Exception {
         Transaction transaction = new Transaction(PURCHASE, stock);
         createTransaction(toDTO(transaction));
-        userService.decreaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
+        userService.decreaseUserBalance(stock.getUser().getId(), stock.getCount()* stock.getBuyPrice());
         return userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
 
     }
