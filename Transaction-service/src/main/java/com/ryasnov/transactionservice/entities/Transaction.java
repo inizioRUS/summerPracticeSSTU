@@ -10,9 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @AllArgsConstructor
@@ -34,5 +34,9 @@ public class Transaction {
     public Transaction(TypeTransaction type, AdvancedStock stock) {
         this.type = type;
         this.stock = stock;
+    }
+
+    public Transaction(TypeTransaction type) {
+        this.type = type;
     }
 }

@@ -13,6 +13,7 @@ import com.ryasnov.transactionservice.errors.TransactionNotFoundException;
 import com.ryasnov.transactionservice.services.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,7 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getAllTransactions(), HttpStatus.OK);
     }
     @GetMapping("/stock")
+    @Transactional
     @Operation(
             summary = "Получение транзакции по акции",
             description = "Для реализации необходимо передать надстройку над акциями с пользователем и количество акций"
@@ -50,6 +52,7 @@ public class TransactionController {
         return new ResponseEntity<>(transactionService.getAllByStock(stock), HttpStatus.OK);
     }
     @GetMapping("/type")
+    @Transactional
     @Operation(
             summary = "Получение транзакции по типу",
             description = "Для реализации необходимо передать тип транзации"
@@ -110,7 +113,7 @@ public class TransactionController {
             summary = "Вывод средств со счета",
             description = "Для реализации необходимо передать пользователя и сумму, которую он собирается вывести"
     )
-    ResponseEntity<UserDTO> withdrawal(@RequestBody User user,@PathVariable("total") Double total) throws Exception{
+    ResponseEntity<UserDTO> withdrawal(@RequestBody User user,@RequestParam("total") Double total) throws Exception{
         return new ResponseEntity<>(transactionService.withdrawal(user, total), HttpStatus.OK);
     }
     @PutMapping("/balance/add")
@@ -118,7 +121,7 @@ public class TransactionController {
             summary = "Добавление средств на счет",
             description = "Для реализации необходимо передать пользователя и сумму, которую он собирается внести"
     )
-    ResponseEntity<UserDTO> addOnAccount(@RequestBody User user,@PathVariable("total") Double total) throws UserNotFoundException{
+    ResponseEntity<UserDTO> addOnAccount(@RequestBody User user,@RequestParam("total") Double total) throws UserNotFoundException{
         return new ResponseEntity<>(transactionService.addOnAccount(user, total), HttpStatus.OK);
     }
 }

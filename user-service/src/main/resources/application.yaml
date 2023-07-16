@@ -14,8 +14,8 @@ spring:
   main:
     web-application-type: servlet
     allow-bean-definition-overriding: true
-
-  security:
-    user:
-      name: dima
-      password: 123
+#
+#  security:
+#    user:
+#      name: dima
+#      password: 123
