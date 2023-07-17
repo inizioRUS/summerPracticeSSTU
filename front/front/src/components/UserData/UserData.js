@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styles from "./UserData.module.css"
 import {getUserById, updateUserById} from "../../services/UserService";
+import camera from "./icons/camera.png"
+import dag from "../RecommendationsStock/dag_test.png"
 
 
 const UserData = () => {
@@ -40,10 +42,28 @@ const UserData = () => {
             <div className={styles.heading}>Личный кабинет</div>
             <form className={styles.container}>
                 <div className={styles.photo_container}>
-                    <div className={styles.photo} style={{
-                        backgroundImage: `url(${user.img})`
-                    }}/>
-                    <div className={styles.photo_input}></div>
+                    <div className={styles.ava}
+                         style={{
+                             backgroundImage: `url(${dag})`
+                         }}>
+                    </div>
+                    <div className={styles.photo_input_container}>
+                        <input className={styles.photo_input}
+                               id={"input_btn"}
+                               name={"input_btn"}
+                               type={"file"}
+                               accept={"image/*"}
+                               onChange={(event) => {
+                                   console.log(event.target.files[0])
+                               }}/>
+                        <label className={styles.label}
+                               htmlFor={"input_btn"}
+                               style={{
+                                   backgroundImage: `url(${camera})`
+                               }}>
+                        </label>
+                        <div>Изменить</div>
+                    </div>
                 </div>
                 <input className={styles.input}
                        placeholder={user.name}
