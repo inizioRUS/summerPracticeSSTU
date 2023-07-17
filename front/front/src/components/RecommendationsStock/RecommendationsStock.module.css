@@ -19,6 +19,7 @@
 }
 
 .recommendations_stock:hover {
+    cursor: pointer;
     background-color: #F3F3F3;
 }
 

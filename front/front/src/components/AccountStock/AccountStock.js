@@ -1,10 +1,14 @@
 import React from 'react';
 import styles from "./AccountStock.module.css"
 import test_icon from "./Ellipse 19.png"
+import {useNavigate} from "react-router";
 
-const AccountStock = () => {
+const AccountStock = ({id}) => {
+    const navigate = useNavigate()
+
     return (
-        <button className={styles.account_stock}>
+        <button className={styles.account_stock}
+                onClick={() => {navigate(`/stock/${id}`)}}>
             <div className={styles.left_container}>
                 <div className={styles.img_container}>
                     <img className={styles.img} src={test_icon} alt={"icon"}/>

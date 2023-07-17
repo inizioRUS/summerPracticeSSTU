@@ -10,4 +10,27 @@
 .logo {
     width: 103px;
     height: 74px;
+
+    border: none;
+    background: none;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.ava {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50px;
+    border: none;
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.ava:hover {
+    cursor: pointer;
 }

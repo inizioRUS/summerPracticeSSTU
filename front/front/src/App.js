@@ -1,22 +1,28 @@
-import Search from "./components/Search/Search";
-import IndexAccount from "./components/IndexAccount/IndexAccount";
-import AccountStock from "./components/AccountStock/AccountStock";
-import Header from "./components/Header/Header";
 import styles from "./App.module.css"
 import MainPage from "./pages/MainPage/MainPage";
-import LoginForm from "./components/LoginForm/LoginForm";
 import LoginPage from "./pages/LoginPage/LoginPage";
-import {Route, Routes} from "react-router-dom";
-import Stock from "./components/Stock/Stock";
-
+import {Route, Routes} from "react-router";
+import StocksPage from "./pages/StocksPage/StocksPage";
+import StockPage from "./pages/StockPage/StockPage";
+import UserPage from "./pages/UserPage/UserPage";
+import BackButton from "./components/BackButton/BackButton";
+import IncreaseBalancePage from "./pages/IncreaseBalancePage/IncreaseBalancePage";
+import OperationsPage from "./pages/OperationsPage/OperationsPage";
+import AnalysePage from "./pages/AnalysePage/AnalysePage";
 
 function App() {
   return (
     <div className={styles.app}>
-        {/*<Routes>*/}
-        {/*    <Route path={"/"} element={<MainPage />}/>*/}
-        {/*</Routes>*/}
-        <Stock />
+        <Routes>
+            <Route path={"/"} element={<LoginPage />} />
+            <Route path={"/main"} element={<MainPage />} />
+            <Route path={"/user"} element={<UserPage />} />
+            <Route path={"/stocks"} element={<StocksPage />} />
+            <Route path={"/stock/:id"} element={<StockPage />} />
+            <Route path={"/increase"} element={<IncreaseBalancePage />} />
+            <Route path={"/operations"} element={<OperationsPage />} />
+            <Route path={"/analyse"} element={<AnalysePage />} />
+        </Routes>
     </div>
   );
 }

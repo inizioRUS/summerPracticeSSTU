@@ -1,0 +1,13 @@
+.back_button {
+    width: 43.24px;
+    height: 37.802px;
+    flex-shrink: 0;
+
+    background: none;
+    border: none;
+}
+
+.back_button:hover {
+    cursor: pointer;
+}
+

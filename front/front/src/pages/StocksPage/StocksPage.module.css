@@ -1,0 +1,32 @@
+.stocks_page {
+    position: relative;
+}
+
+.back {
+    position: absolute;
+    top: 140px;
+    left: 30px;
+}
+
+.container {
+    width: 1291px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.stocks_container {
+    width: 958px;
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    column-gap: 98px;
+    row-gap: 30px;
+}
