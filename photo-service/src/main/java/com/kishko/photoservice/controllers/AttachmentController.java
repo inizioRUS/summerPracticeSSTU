@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/attachments")
+@CrossOrigin
 public class AttachmentController {
 
     @Autowired

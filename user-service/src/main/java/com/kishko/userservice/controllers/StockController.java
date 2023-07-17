@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/stocks")
+@CrossOrigin
 @Tag(name="Акция-контроллер", description="Методы для взаимодействия с акциями")
 public class StockController {
 
