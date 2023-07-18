@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     @Cacheable(value = "users", key = "#email")
     public UserDTO getUserByEmail(String email) throws UserNotFoundException {
 

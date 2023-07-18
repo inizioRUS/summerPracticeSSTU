@@ -22,9 +22,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisStandaloneConfiguration.setPort(6379);
         redisStandaloneConfiguration.setPassword("foobared");
 
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(redisStandaloneConfiguration);
-
-        return jedisConnectionFactory;
+        return new JedisConnectionFactory(redisStandaloneConfiguration);
 
     }
 
