@@ -10,6 +10,7 @@ import com.ryasnov.transactionservice.dtos.TransactionDTO;
 import com.ryasnov.transactionservice.entities.Transaction;
 import com.ryasnov.transactionservice.entities.TypeTransaction;
 import com.ryasnov.transactionservice.errors.TransactionNotFoundException;
+import com.ryasnov.transactionservice.producer.RabbitMQJsonProducer;
 import com.ryasnov.transactionservice.services.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,6 +29,10 @@ import java.util.List;
 public class TransactionController {
     @Autowired
     private TransactionService transactionService;
+    @Autowired
+    private RabbitMQJsonProducer producer;
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     @Operation(
@@ -82,47 +87,59 @@ public class TransactionController {
             summary = "Покупка транзакций",
             description = "Для реализации необходимо передать надстроку над множеством одинаковых транзаций"
     )
-    ResponseEntity<UserDTO> buyingShare(@RequestBody AdvancedStock stock) throws Exception{
-        return new ResponseEntity<>(transactionService.buyingShare(stock), HttpStatus.OK);
+    ResponseEntity<String> buyingShare(@RequestBody AdvancedStock stock) throws Exception{
+        Transaction transaction = transactionService.toTransaction(transactionService.buyingShare(stock));
+        producer.sendJsonMessage(transaction);
+        return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }
     @PutMapping("/sell")
     @Operation(
             summary = "Продажа транзакций",
             description = "Для реализации необходимо передать надстроку над множеством одинаковых транзаций"
     )
-    ResponseEntity<UserDTO> sellingShare(@RequestBody AdvancedStock stock) throws Exception{
-        return new ResponseEntity<>(transactionService.sellingShare(stock), HttpStatus.OK);
+    ResponseEntity<String> sellingShare(@RequestBody AdvancedStock stock) throws Exception{
+        Transaction transaction = transactionService.toTransaction(transactionService.sellingShare(stock));
+        producer.sendJsonMessage(transaction);
+        return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }
     @PutMapping("/favourites/add")
     @Operation(
             summary = "Добавление транзакции в любимое/отслеживаемое",
             description = "Для реализации необходимо передать саму транзакцию и пользователя, что добавил ее"
     )
-    ResponseEntity<UserDTO> addFavourites(@RequestBody User user,@RequestBody Stock stock) throws UserNotFoundException{
-        return new ResponseEntity<>(transactionService.addFavourites(user, stock), HttpStatus.OK);
+    ResponseEntity<String> addFavourites(@RequestBody User user,@RequestBody Stock stock) throws UserNotFoundException{
+        Transaction transaction = transactionService.toTransaction(transactionService.addFavourites(user, stock));
+        producer.sendJsonMessage(transaction);
+        return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }
     @PutMapping("/favourites/del")
     @Operation(
             summary = "Удаление транзакции из любимое/отслеживаемое",
             description = "Для реализации необходимо передать саму транзакцию и пользователя, что добавил ее"
     )
-    ResponseEntity<UserDTO> deleteFavourites(@RequestBody User user,@RequestBody Stock stock) throws Exception{
-        return new ResponseEntity<>(transactionService.deleteFavourites(user, stock), HttpStatus.OK);
+    ResponseEntity<String> deleteFavourites(@RequestBody User user,@RequestBody Stock stock) throws Exception{
+        Transaction transaction = transactionService.toTransaction(transactionService.deleteFavourites(user, stock));
+        producer.sendJsonMessage(transaction);
+        return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }
     @PutMapping("/balance/decrease")
     @Operation(
             summary = "Вывод средств со счета",
             description = "Для реализации необходимо передать пользователя и сумму, которую он собирается вывести"
     )
-    ResponseEntity<UserDTO> withdrawal(@RequestBody User user,@RequestParam("total") Double total) throws Exception{
-        return new ResponseEntity<>(transactionService.withdrawal(user, total), HttpStatus.OK);
+    ResponseEntity<String> withdrawal(@RequestBody User user,@RequestParam("total") Double total) throws Exception{
+        Transaction transaction = transactionService.toTransaction(transactionService.withdrawal(user, total));
+        producer.sendJsonMessage(transaction);
+        return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }
     @PutMapping("/balance/add")
     @Operation(
             summary = "Добавление средств на счет",
             description = "Для реализации необходимо передать пользователя и сумму, которую он собирается внести"
     )
-    ResponseEntity<UserDTO> addOnAccount(@RequestBody User user,@RequestParam("total") Double total) throws UserNotFoundException{
-        return new ResponseEntity<>(transactionService.addOnAccount(user, total), HttpStatus.OK);
+    ResponseEntity<String> addOnAccount(@RequestBody User user,@RequestParam("total") Double total) throws UserNotFoundException{
+        Transaction transaction = transactionService.toTransaction(transactionService.addOnAccount(user, total));
+        producer.sendJsonMessage(transaction);
+        return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.repositories.AdvancedStockRepository;
 import com.kishko.userservice.services.UserService;
 import com.ryasnov.transactionservice.dtos.TransactionDTO;
+import com.ryasnov.transactionservice.dtos.TransactionDTOWithoutStock;
 import com.ryasnov.transactionservice.entities.Transaction;
 import com.ryasnov.transactionservice.entities.TypeTransaction;
 import com.ryasnov.transactionservice.errors.TransactionNotFoundException;
@@ -49,10 +50,34 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public Transaction toTransaction(TransactionDTOWithoutStock toDtoWithoutStock) {
+        return Transaction.builder()
+                .id(toDtoWithoutStock.getId())
+                .type(toDtoWithoutStock.getType())
+                .build();
+    }
+
+    @Override
+    public TransactionDTOWithoutStock toDtoWithoutStock(Transaction transaction) {
+        return TransactionDTOWithoutStock.builder()
+                .id(transaction.getId())
+                .type(transaction.getType())
+                .build();
+    }
+
+
+    @Override
     public TransactionDTO createTransaction(TransactionDTO transactionDTO){
         transactionRepository.save(toTransaction(transactionDTO));
         return transactionDTO;
     }
+
+    @Override
+    public TransactionDTOWithoutStock createTransaction(TransactionDTOWithoutStock transactionDTOWithoutStock) {
+        transactionRepository.save(toTransaction(transactionDTOWithoutStock));
+        return transactionDTOWithoutStock;
+    }
+
     @Override
     public List<TransactionDTO> getAllTransactions() throws TransactionNotFoundException {
         return transactionRepository
@@ -114,52 +139,57 @@ public class TransactionServiceImpl implements TransactionService {
     }
     //Преверсия
     @Override
-    public UserDTO buyingShare(AdvancedStock stock) throws Exception {
+    public TransactionDTO buyingShare(AdvancedStock stock) throws Exception {
         Transaction transaction = new Transaction(PURCHASE, stock);
         createTransaction(toDTO(transaction));
         userService.decreaseUserBalance(stock.getUser().getId(), stock.getCount()* stock.getBuyPrice());
-        return userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+        userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+        return toDTO(transaction);
 
     }
 
     @Override
-    public UserDTO sellingShare(AdvancedStock stock) throws Exception {
+    public TransactionDTO sellingShare(AdvancedStock stock) throws Exception {
         Transaction transaction = new Transaction(SALE, stock);
         createTransaction(toDTO(transaction));
         userService.increaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
-        return userService.deleteUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+        userService.deleteUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+        return toDTO(transaction);
        // return userService.toUser(userDTO);
     }
 
     @Override
-    public UserDTO addFavourites(User user, Stock stock) throws UserNotFoundException {
+    public TransactionDTO addFavourites(User user, Stock stock) throws UserNotFoundException {
         Transaction transaction = new Transaction(ADD_TO_SUBSCRIPTIONS, new AdvancedStock(stock,user,1));
         createTransaction(toDTO(transaction));
-        return userService.addUserWishlistStock(user.getId(), stock.getId());
+        userService.addUserWishlistStock(user.getId(), stock.getId());
+        return toDTO(transaction);
 
     }
 
     @Override
-    public UserDTO deleteFavourites(User user, Stock stock) throws Exception {
+    public TransactionDTO deleteFavourites(User user, Stock stock) throws Exception {
         Transaction transaction = new Transaction(REMOVING_FROM_SUBSCRIPTIONS, new AdvancedStock(stock,user,1));
         createTransaction(toDTO(transaction));
-        return userService.deleteUserWishlistStock(user.getId(), stock.getId());
+        userService.deleteUserWishlistStock(user.getId(), stock.getId());
+        return toDTO(transaction);
+    }
+
+    @Override
+    public TransactionDTOWithoutStock withdrawal(User user, Double total) throws Exception {
+        Transaction transaction = new Transaction(WITHDRAWAL);
+        createTransaction(toDtoWithoutStock(transaction));
+        userService.decreaseUserBalance(user.getId(), total);
+        return toDtoWithoutStock(transaction);
 
     }
 
     @Override
-    public UserDTO withdrawal(User user, Double total) throws Exception {
-        Transaction transaction = new Transaction(WITHDRAWAL,null);
-        createTransaction(toDTO(transaction));
-        return userService.decreaseUserBalance(user.getId(), total);
-
-    }
-
-    @Override
-    public UserDTO addOnAccount(User user, Double total) throws UserNotFoundException {
-        Transaction transaction = new Transaction( PUT_ON_THE_ACCOUNT, null);
-        createTransaction(toDTO(transaction));
-        return userService.increaseUserBalance(user.getId(), total);
+    public TransactionDTOWithoutStock addOnAccount(User user, Double total) throws UserNotFoundException {
+        Transaction transaction = new Transaction( PUT_ON_THE_ACCOUNT);
+        createTransaction(toDtoWithoutStock(transaction));
+        userService.increaseUserBalance(user.getId(), total);
+        return toDtoWithoutStock(transaction);
 
     }
 }

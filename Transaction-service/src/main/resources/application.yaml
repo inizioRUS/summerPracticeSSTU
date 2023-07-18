@@ -14,7 +14,14 @@ spring:
   main:
     web-application-type: servlet
     allow-bean-definition-overriding: true
-
+  rabbitmq:
+    host: puffin.rmq2.cloudamqp.com
+    virtual-host: ngzrlfjc
+    port: 5672
+    username: ngzrlfjc
+    password: 1azq3GlaK90OCRt78skHLK-ikwYeZ4fE
+    addresses: amqps://ngzrlfjc:1azq3GlaK90OCRt78skHLK-ikwYeZ4fE@puffin.rmq2.cloudamqp.com/ngzrlfjc
+#
 #  security:
 #    user:
 #      name: dima
