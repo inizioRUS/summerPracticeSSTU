@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin
 @Tag(name="Пользователь-контроллер", description="Методы для взаимодействия с пользователями")
 public class UserController {
 

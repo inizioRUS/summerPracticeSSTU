@@ -23,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
+@CrossOrigin
 @Tag(name="Контроллер транзакций", description="Методы для взаимодействия с транзакциями")
 public class TransactionController {
     @Autowired
