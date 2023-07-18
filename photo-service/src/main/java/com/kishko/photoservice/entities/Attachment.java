@@ -5,13 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.Serializable;
+
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "attachments")
-public class Attachment {
+public class Attachment implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")

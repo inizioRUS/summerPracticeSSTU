@@ -17,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#id")
     public UserDTO getUserById(Long id) throws UserNotFoundException {
 
         User user = userRepository.findById(id).orElseThrow(
@@ -62,6 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#email")
     public UserDTO getUserByEmail(String email) throws UserNotFoundException {
 
         User user = userRepository.getUserByEmail(email).orElseThrow(
@@ -72,6 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#id")
     public UserDTO updateUserById(Long id, UserDTO userDTO) throws UserNotFoundException {
 
         UserDTO userDB = getUserById(id);
@@ -106,6 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", allEntries = true)
     public String deleteUserById(Long id) throws UserNotFoundException {
 
         if (userRepository.findById(id).isEmpty()) {
@@ -120,6 +126,7 @@ public class UserServiceImpl implements UserService {
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
     @Override
+    @CacheEvict(value = "users", key = "#id")
     public UserDTO updateUserStocks(Long userId, Long stockId, Integer count) throws Exception {
 
         UserDTO user = getUserById(userId);
@@ -157,6 +164,7 @@ public class UserServiceImpl implements UserService {
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO deleteUserStocks(Long userId, Long advancedStockId, Integer count) throws Exception {
 
         UserDTO user = getUserById(userId);
@@ -188,6 +196,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException {
 
         List<Stock> stocks;
@@ -206,6 +215,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception {
 
         List<Stock> stocks;
@@ -230,6 +240,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO changeUserPhoto(Long userId, MultipartFile photo) throws Exception {
 
         UserDTO userDTO = getUserById(userId);
@@ -253,6 +264,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO increaseUserBalance(Long userId, Double amount) throws UserNotFoundException {
 
         UserDTO user = getUserById(userId);
@@ -267,6 +279,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO decreaseUserBalance(Long userId, Double amount) throws Exception {
 
         UserDTO user = getUserById(userId);
@@ -286,6 +299,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#userId")
     public Double getProfitByUserId(Long userId) throws UserNotFoundException {
 
         double profit = 0.0;

@@ -1,10 +1,12 @@
 package com.kishko.userservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +20,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @Table(name = "stocks")
-public class Stock {
+public class Stock implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +40,7 @@ public class Stock {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishlist")
     @ToString.Exclude
+    @JsonBackReference
     private List<User> users;
 
     @Column(name = "attachmentId")

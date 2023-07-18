@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
 @Entity
@@ -12,7 +14,7 @@ import lombok.*;
 @Builder
 @Data
 @Table(name = "advancedStocks")
-public class AdvancedStock {
+public class AdvancedStock implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
