@@ -14,6 +14,13 @@ spring:
   main:
     web-application-type: servlet
     allow-bean-definition-overriding: true
+  rabbitmq:
+    host: <hawk-01.rmq.cloudamqp.com>
+    virtual-host: <tblsugde>
+    port: 5672
+    username: <tblsugde>
+    password: <7G9KUXOqvCt3N1_3ZyuNEsSPBZNCsvjc>
+    addresses: amqps://tblsugde:7G9KUXOqvCt3N1_3ZyuNEsSPBZNCsvjc@hawk.rmq.cloudamqp.com/tblsugde
 #
 #  security:
 #    user:

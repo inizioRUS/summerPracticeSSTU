@@ -1,7 +1,6 @@
 package com.kishko.userservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.kishko.photoservice.entities.Attachment;
 import jakarta.persistence.*;
 import lombok.*;
@@ -55,7 +54,6 @@ public class User implements Serializable {
     private List<AdvancedStock> advancedStocks;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonManagedReference
     @JoinTable(name = "usersWishlist",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "stock_id", referencedColumnName = "id")

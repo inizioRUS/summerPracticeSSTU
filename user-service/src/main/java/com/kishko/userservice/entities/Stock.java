@@ -1,6 +1,5 @@
 package com.kishko.userservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,7 +39,6 @@ public class Stock implements Serializable {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "wishlist")
     @ToString.Exclude
-    @JsonBackReference
     private List<User> users;
 
     @Column(name = "attachmentId")
