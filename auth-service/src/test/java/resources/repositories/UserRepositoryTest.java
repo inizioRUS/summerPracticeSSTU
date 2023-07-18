@@ -1,4 +1,4 @@
-package com.kishko.authservice.repositories;
+package resources.repositories;
 
 import com.kishko.userservice.entities.Role;
 import com.kishko.userservice.entities.User;
