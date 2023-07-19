@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO updateUserById(Long userId, UserDTO userDTO) throws UserNotFoundException {
 
         UserDTO userDB = getUserById(userId);
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO updateUserStocks(Long userId, Long stockId, Integer count) throws Exception {
 
         UserDTO user = getUserById(userId);
@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO deleteUserStocks(Long userId, Long advancedStockId, Integer count) throws Exception {
 
         UserDTO user = getUserById(userId);
@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException {
 
         List<Stock> stocks;
@@ -215,7 +215,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception {
 
         List<Stock> stocks;
@@ -240,7 +240,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO changeUserPhoto(Long userId, MultipartFile photo) throws Exception {
 
         UserDTO userDTO = getUserById(userId);
@@ -260,13 +260,11 @@ public class UserServiceImpl implements UserService {
 
         }
 
-        Thread.sleep(4000);
-
         return userDTO;
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO increaseUserBalance(Long userId, Double amount) throws UserNotFoundException {
 
         UserDTO user = getUserById(userId);
@@ -281,7 +279,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO decreaseUserBalance(Long userId, Double amount) throws Exception {
 
         UserDTO user = getUserById(userId);
@@ -301,7 +299,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public Double getProfitByUserId(Long userId) throws UserNotFoundException {
 
         double profit = 0.0;
