@@ -6,6 +6,7 @@ import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.repositories.AdvancedStockRepository;
+import com.kishko.userservice.repositories.UserRepository;
 import com.kishko.userservice.services.UserService;
 import com.ryasnov.transactionservice.dtos.TransactionDTO;
 import com.ryasnov.transactionservice.dtos.TransactionDTOWithoutStock;
@@ -30,6 +31,8 @@ public class TransactionServiceImpl implements TransactionService {
     UserService userService;
     @Autowired
     AdvancedStockRepository advancedStockRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public Transaction toTransaction(TransactionDTO transactionDTO) {
@@ -179,7 +182,8 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTOWithoutStock withdrawal(User user, Double total) throws Exception {
         Transaction transaction = new Transaction(WITHDRAWAL);
         createTransaction(toDtoWithoutStock(transaction));
-        userService.decreaseUserBalance(user.getId(), total);
+        Long id = userService.getUserById(user.getId()).getId();
+        userRepository.save(userService.toUser(userService.decreaseUserBalance(id, total)));
         return toDtoWithoutStock(transaction);
 
     }
@@ -188,7 +192,8 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTOWithoutStock addOnAccount(User user, Double total) throws UserNotFoundException {
         Transaction transaction = new Transaction( PUT_ON_THE_ACCOUNT);
         createTransaction(toDtoWithoutStock(transaction));
-        userService.increaseUserBalance(user.getId(), total);
+        Long id = userService.getUserById(user.getId()).getId();
+
         return toDtoWithoutStock(transaction);
 
     }
