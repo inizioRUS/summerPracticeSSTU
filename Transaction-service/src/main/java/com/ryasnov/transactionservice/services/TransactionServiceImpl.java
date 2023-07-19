@@ -193,7 +193,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction( PUT_ON_THE_ACCOUNT);
         createTransaction(toDtoWithoutStock(transaction));
         Long id = userService.getUserById(user.getId()).getId();
-
+        userRepository.save(userService.toUser(userService.increaseUserBalance(id, total)));
         return toDtoWithoutStock(transaction);
 
     }
