@@ -26,3 +26,6 @@ spring:
 #    user:
 #      name: dima
 #      password: 123
+logging:
+  file:
+    name: elk-stack.log
