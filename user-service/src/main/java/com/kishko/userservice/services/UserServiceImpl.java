@@ -260,6 +260,8 @@ public class UserServiceImpl implements UserService {
 
         }
 
+        Thread.sleep(4000);
+
         return userDTO;
     }
 
