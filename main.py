@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import ParserClass
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 app = FastAPI()
 
@@ -40,3 +41,6 @@ async def say_hello(name: str):
 @app.get("/today/{name}")
 async def say_hello(name: str):
     return {"prices": par.get(name, "1d")}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
