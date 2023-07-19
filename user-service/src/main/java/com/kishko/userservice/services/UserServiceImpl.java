@@ -54,11 +54,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "users", key = "#id")
-    public UserDTO getUserById(Long id) throws UserNotFoundException {
+    @Cacheable(value = "users", key = "#userId")
+    public UserDTO getUserById(Long userId) throws UserNotFoundException {
 
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("There is no user with id: " + id)
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException("There is no user with id: " + userId)
         );
 
         return toDTO(user);
@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @Cacheable(value = "users", key = "#email")
     public UserDTO getUserByEmail(String email) throws UserNotFoundException {
 
         User user = userRepository.getUserByEmail(email).orElseThrow(
@@ -77,10 +76,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#id")
-    public UserDTO updateUserById(Long id, UserDTO userDTO) throws UserNotFoundException {
+    @CacheEvict(value = "users", key = "#userId")
+    public UserDTO updateUserById(Long userId, UserDTO userDTO) throws UserNotFoundException {
 
-        UserDTO userDB = getUserById(id);
+        UserDTO userDB = getUserById(userId);
 
         String email = userDTO.getEmail();
 
@@ -113,13 +112,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @CacheEvict(value = "users", allEntries = true)
-    public String deleteUserById(Long id) throws UserNotFoundException {
+    public String deleteUserById(Long userId) throws UserNotFoundException {
 
-        if (userRepository.findById(id).isEmpty()) {
-            throw new UserNotFoundException("There is no user with id: " + id);
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new UserNotFoundException("There is no user with id: " + userId);
         }
 
-        userRepository.deleteById(id);
+        userRepository.deleteById(userId);
 
         return "successful deleted";
     }
@@ -127,7 +126,7 @@ public class UserServiceImpl implements UserService {
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
     @Override
-    @CacheEvict(value = "users", key = "#id")
+    @CacheEvict(value = "users", key = "#userId")
     public UserDTO updateUserStocks(Long userId, Long stockId, Integer count) throws Exception {
 
         UserDTO user = getUserById(userId);
