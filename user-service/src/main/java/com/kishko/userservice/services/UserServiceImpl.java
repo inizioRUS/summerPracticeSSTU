@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = "users", key = "#userId", sync=true)
+ //   @Cacheable(value = "users", key = "#userId", sync=true)
     public UserDTO getUserById(Long userId) throws UserNotFoundException {
 
         User user = userRepository.findById(userId).orElseThrow(
@@ -200,7 +200,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CachePut(cacheNames="users", key="#userId")
+ //   @CachePut(cacheNames="users", key="#userId")
 //    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO addUserWishlistStock(Long userId, Long stockId) throws UserNotFoundException {
 
@@ -220,7 +220,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CachePut(cacheNames="users", key="#userId")
+ //   @CachePut(cacheNames="users", key="#userId")
 //    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO deleteUserWishlistStock(Long userId, Long stockId) throws Exception {
 
@@ -246,7 +246,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CachePut(cacheNames="users", key="#userId")
+//    @CachePut(cacheNames="users", key="#userId")
 //    @CacheEvict(value = "users", key = "#userId", allEntries = true)
     public UserDTO changeUserPhoto(Long userId, MultipartFile photo) throws Exception {
 
