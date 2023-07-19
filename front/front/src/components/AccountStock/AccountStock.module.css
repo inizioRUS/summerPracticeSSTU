@@ -31,11 +31,14 @@
     height: 80px;
     display: flex;
     justify-content: space-between;
+    column-gap: 10px;
 }
 
 .img_container {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 120px auto;
 }
 
 .img {
@@ -45,6 +48,7 @@
 
 .small_container {
     text-align: left;
+    width: 120px;
     height: 80px;
     display: flex;
     flex-direction: column;

@@ -28,7 +28,9 @@ const Recommendations = () => {
             <div className={styles.header}>Популярные бумаги</div>
             <div className={styles.content}>
                 {recommendedStocks.map((stock) => {
-                    return <Link to={`/stock/${stock.id}`} className={styles.link}>
+                    return <Link to={`/stock/${stock.id}`}
+                                 className={styles.link}
+                                 key={stock.id}>
                         <RecommendationsStock key={stock.id}
                                               img={stock.img}
                                               name={stock.name}

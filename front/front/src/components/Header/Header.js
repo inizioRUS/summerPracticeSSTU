@@ -4,27 +4,20 @@ import Search from "../Search/Search";
 import logo from "./Logo.png"
 import defaultAva from "./default.jpg"
 import {useNavigate} from "react-router";
-import {getUserByEmail} from "../../services/UserService";
-import {getCurrentUser} from "../../services/AuthService";
+import {getUserByEmail, getUserById} from "../../services/UserService";
+import {getCurrentUser} from "../../services/UserService";
+import {getPhotoById} from "../../services/PhotoService";
 
 const Header = () => {
     const navigate = useNavigate()
-    const [user, setUser] = useState({})
-    const [ava, setAva] = useState(null)
+    const [ava, setAva] = useState(defaultAva)
 
     useEffect(() => {
-        // const currentUser = getCurrentUser()
-        // setUser(getUserByEmail(currentUser
-        //     .then((response) => {
-        //         return response.email
-        //     }))
-        //     .catch(error => {
-        //         console.log(error)
-        //     }))
-        ava === null ? setAva(defaultAva) : setAva(user.ava)
-
-    }, [])
-
+        getUserById(getCurrentUser().id)
+            .catch(error => console.log(error))
+        getCurrentUser().attachmentId
+            ? setAva(getPhotoById(getCurrentUser().attachmentId))
+            : setAva(defaultAva)    }, [])
     return (
         <div className={styles.header_container}>
             <button className={styles.logo}

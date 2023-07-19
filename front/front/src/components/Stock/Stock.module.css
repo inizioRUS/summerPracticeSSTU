@@ -36,14 +36,10 @@
 }
 
 .picture {
-    width: 80px;
-    height: 80px;
-
+    width: 150px;
     background-position: center;
     background-repeat: no-repeat;
-    /*background-size: cover;*/
-
-    border-radius: 80px;
+    background-size: 120px auto;
 }
 
 .text {

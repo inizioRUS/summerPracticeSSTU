@@ -1,22 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import styles from "./StocksPage.module.css"
+import styles from "../StocksPage/StocksPage.module.css"
 import Header from "../../components/Header/Header";
-import img from "../../components/RecommendationsStock/dag_test.png"
-import Stock from "../../components/Stock/Stock";
-import {Link} from "react-router-dom";
 import BackButton from "../../components/BackButton/BackButton";
 import {useNavigate} from "react-router";
-import {getStocks} from "../../services/StockService";
+import {getCurrentUser, getUserById} from "../../services/UserService";
 import {getPhotoById} from "../../services/PhotoService";
+import {Link} from "react-router-dom";
+import Stock from "../../components/Stock/Stock";
 
-
-const StocksPage = () => {
+const FavouritePage = () => {
     const navigate = useNavigate()
     const [stocks, setStocks] = useState([])
 
     useEffect(() => {
-        getStocks()
-            .then(response => setStocks(response))
+        getUserById(getCurrentUser().id)
+            .then(response => setStocks(response.wishlist))
             .catch(error => console.log(error))
     }, [])
 
@@ -45,9 +43,8 @@ const StocksPage = () => {
                     }
                 </div>
             </div>
-
         </div>
     );
 };
 
-export default StocksPage;
+export default FavouritePage;

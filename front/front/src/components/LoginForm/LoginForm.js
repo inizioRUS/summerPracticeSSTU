@@ -11,8 +11,8 @@ const LoginForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        authenticate(email, password)
-            .then(result => {
+        authenticate(email)
+            .then(() => {
                 navigate("/main")
             })
             .catch(error => {

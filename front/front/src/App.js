@@ -8,7 +8,7 @@ import UserPage from "./pages/UserPage/UserPage";
 import BackButton from "./components/BackButton/BackButton";
 import IncreaseBalancePage from "./pages/IncreaseBalancePage/IncreaseBalancePage";
 import OperationsPage from "./pages/OperationsPage/OperationsPage";
-import AnalysePage from "./pages/AnalysePage/AnalysePage";
+import FavouritePage from "./pages/FavouritePage/FavouritePage";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             <Route path={"/stock/:id"} element={<StockPage />} />
             <Route path={"/increase"} element={<IncreaseBalancePage />} />
             <Route path={"/operations"} element={<OperationsPage />} />
-            <Route path={"/analyse"} element={<AnalysePage />} />
+            <Route path={"/favourite"} element={<FavouritePage />} />
         </Routes>
     </div>
   );

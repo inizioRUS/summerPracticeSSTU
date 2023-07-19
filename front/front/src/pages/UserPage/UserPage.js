@@ -19,10 +19,7 @@ const UserPage = () => {
             </div>
             <Header />
             <div className={styles.top_container}>
-                <UserData img={img}
-                          name={"Олег"}
-                          surname={"Штырев"}
-                          email={"oleg@gmail.com"}/>
+                <UserData/>
                 <IndexAccount />
             </div>
         </div>
