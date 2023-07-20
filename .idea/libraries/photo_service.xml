@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="photo-service">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/photo_service_jar/photo-service.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
