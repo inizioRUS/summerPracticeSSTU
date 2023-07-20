@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,6 +23,10 @@ public class AppConfig {
     private UserRepository userRepository;
     @Autowired
     private TransactionRepository transactionRepository;
+    @Bean
+    public WebClient localApiClient() {
+        return WebClient.create("http://80.249.145.114:8000/today/");
+    }
 
 
 }

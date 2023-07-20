@@ -21,7 +21,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="user-service" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:6.0.10" level="project" />
@@ -140,5 +139,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.amqp:spring-rabbit-junit:3.0.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-library:2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:2.2" level="project" />
+    <orderEntry type="library" name="user-service" level="project" />
   </component>
 </module>
