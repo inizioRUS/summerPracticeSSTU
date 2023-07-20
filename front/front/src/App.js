@@ -18,7 +18,7 @@ function App() {
             <Route path={"/main"} element={<MainPage />} />
             <Route path={"/user"} element={<UserPage />} />
             <Route path={"/stocks"} element={<StocksPage />} />
-            <Route path={"/stock/:id"} element={<StockPage />} />
+            <Route path={"/stock/:id"}  element={<StockPage />} />
             <Route path={"/increase"} element={<IncreaseBalancePage />} />
             <Route path={"/operations"} element={<OperationsPage />} />
             <Route path={"/favourite"} element={<FavouritePage />} />

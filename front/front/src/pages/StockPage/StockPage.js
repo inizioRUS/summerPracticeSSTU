@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styles from "./StockPage.module.css"
-import {useParams, useNavigate} from "react-router";
+import {useParams, useNavigate, useLocation} from "react-router";
 import Header from "../../components/Header/Header";
 import {getStockById, getYearStocksChart} from "../../services/StockService";
 import BackButton from "../../components/BackButton/BackButton";
@@ -11,18 +11,22 @@ import Chart from 'chart.js/auto';
 import {addUserWishlistStock, deleteUserWishlistStock, getCurrentUser} from "../../services/UserService";
 import AccountStock from "../../components/AccountStock/AccountStock";
 import {getPhotoById} from "../../services/PhotoService";
+import {buy} from "../../services/TransactionService";
 
 
 const StockPage = () => {
     const navigate = useNavigate()
     const {id} = useParams();
-    const [stock, setStock] = useState({});
+    const [name, setName] = useState('');
+    const [stock, setStock] = useState({})
+    const [advancedStock, setAdvancedStock] = useState({})
+
     const [dataSet, setDataSet] = useState([])
     const [labels, setLabels] = useState([])
+
     const [favourite, setFavourite] = useState(false)
 
     useEffect(() => {
-        //
         getStockById(id)
             .then(result => {
                     localStorage.setItem("stock", JSON.stringify(result))
@@ -40,21 +44,28 @@ const StockPage = () => {
                 }
             )
             .catch(error => console.log(error))
-        //
-        getCurrentUser().wishlist.forEach(wish => {
-            if (wish.id == id) {
-                setFavourite(true)
-            }
-        })
-        //
+
         getCurrentUser().advancedStocks.map(advancedStock => {
             if (advancedStock.stock.id == id) {
                 localStorage
                     .setItem("advancedStock", JSON.stringify(advancedStock))
             }
         })
-        //
-    }, [])
+
+        setStock(getLocalStock())
+        setAdvancedStock(getLocalAdvancedStock())
+
+        console.log(stock)
+        console.log(advancedStock)
+
+        getCurrentUser().wishlist.forEach(wish => {
+            if (wish.id == id) {
+                setFavourite(true)
+            }
+        })
+
+        setName(getLocalStock().name)
+    }, [id])
 
 
     const handleFavourite = () => {
@@ -75,20 +86,21 @@ const StockPage = () => {
 
     }
 
+    const getLocalStock = () => JSON.parse(localStorage.getItem("stock"))
+
+    const getLocalAdvancedStock = () => JSON.parse(localStorage.getItem("advancedStock"))
+
     const handleAdvancedStock = () => {
-        const advancedStock = JSON.parse(localStorage
-            .getItem("advancedStock"))
-        const stock = JSON.parse(localStorage.getItem("stock"))
-        const stockId = stock.id
-        const photoLink = getPhotoById(stock.attachmentId);
-        const change = stock.price - advancedStock.buyPrice
-        return <AccountStock key={stockId}
-                             id={stockId}
-                             img={photoLink}
-                             name={stock.name}
-                             cost={stock.price.toFixed(2)}
-                             count={advancedStock.count}
-                             change={change}/>
+        const photoId = getLocalStock().attachmentId
+        const photoLink = getPhotoById(photoId);
+        const change = getLocalStock().price - getLocalAdvancedStock().buyPrice
+        return (<AccountStock key={id}
+                              id={id}
+                              img={photoLink}
+                              name={getLocalStock().name}
+                              cost={getLocalStock().price.toFixed(2)}
+                              count={getLocalAdvancedStock().count}
+                              change={change.toFixed(4)}/>)
     }
 
     return (
@@ -105,9 +117,7 @@ const StockPage = () => {
                             }}/>
                         </div>
                         <div className={styles.heading_container}>
-                            <div className={styles.name}>
-                                {stock.name}
-                            </div>
+                            <div className={styles.name}>{name}</div>
                             <button className={styles.like}
                                     onClick={() => {
                                         handleFavourite()
@@ -133,12 +143,16 @@ const StockPage = () => {
                     <div>
                         <div className={styles.text}>В портфеле</div>
                         <div className={styles.in_account}>
-                            {localStorage.getItem("advancedStock") ? handleAdvancedStock() :
-                                <div className={styles.text}>Пока нет</div>}
+                            {}
                         </div>
                     </div>
                     <div className={styles.in_account_container}>
-                        <button className={styles.buy}>
+                        <button className={styles.buy} onClick={() => {
+                            console.log(1)
+                            buy(JSON.parse(localStorage.getItem("advancedStock")))
+                                .then(response => console.log(response))
+                                .catch(error => console.log(error))
+                        }}>
                             <div className={styles.txt}>Купить</div>
                         </button>
                         <button className={styles.sell}>

@@ -37,7 +37,7 @@ const FavouritePage = () => {
                                 <Stock key={stock.id}
                                        img={photoLink}
                                        name={stock.name}
-                                       cost={stock.price}/>
+                                       cost={stock.price.toFixed(2)}/>
                             </Link>
                         }) : <div></div>
                     }

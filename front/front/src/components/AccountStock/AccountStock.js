@@ -28,7 +28,7 @@ const AccountStock = ({id, img, name, cost, count, change}) => {
                 <div>{count * cost}₽</div>
                 <div style={{
                     color: `${changeColor}`
-                }}>+{change}₽ · {(change/cost).toFixed(2)}%</div>
+                }}>{change.toFixed(2)}₽ · {(change/cost).toFixed(2)}%</div>
             </div>
 
         </button>

@@ -13,3 +13,27 @@ export const increaseBalance = async (user, total) => {
         .then(response => response)
         .catch(error => console.log(error))
 }
+
+export const sell = async () => {
+    const options = {
+        method: "DELETE",
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+        },
+    }
+}
+
+export const buy = async (advancedStock) => {
+    const options = {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify(advancedStock)
+    }
+    return await fetch(`${API_URl}/buy`, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
+}
