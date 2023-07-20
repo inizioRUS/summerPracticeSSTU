@@ -18,13 +18,18 @@ export const register = async (email, password) => {
 }
 
 export const authenticate = async (email) => {
+    console.log("start")
     const options = {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     };
     return await fetch(`http://31.184.253.4:8080/users/email?email=${email}`, options)
-        .then(response => response.json())
         .then(response => {
+            console.log(response.json());
+            return response.json()
+        })
+        .then(response => {
+            console.log("end")
             localStorage.setItem("user", JSON.stringify(response))
             return response
         })

@@ -16,7 +16,7 @@ export const getUserById = async (id) => {
         .then(response => response.json())
         .then((response) => {
             if (response) {
-                localStorage.setItem("user", JSON.stringify(response))
+                setCurrentUser(response)
             }
             return response
         })
@@ -60,19 +60,38 @@ export const updateUserStocks = async (userId, stockId, count) => {
 }
 
 export const increaseUserBalance = async (userId, amount) => {
-
+    const options = {
+        method: 'PUT',
+    };
+    fetch(`${API_URl}/${userId}/incBalance/${amount}`, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
 }
 
 export const decreaseUserBalance = async (userId, amount) => {
-
+    const options = {
+        method: 'PUT',
+    };
+    fetch(`${API_URl}/${userId}/decBalance/${amount}`, options)
+        .catch(error => console.log(error))
 }
 
 export const addUserWishlistStock = async (userId, stockId) => {
-
+    const options = {
+        method: 'PUT',
+    };
+    fetch(`${API_URl}/${userId}/wishlist/stock/${stockId}`, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
 }
 
 export const deleteUserWishlistStock = async (userId, stockId) => {
-
+    const options = {
+        method: 'DELETE',
+    };
+    fetch(`${API_URl}/${userId}/wishlist/stock/${stockId}`, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
 }
 export const changeUserPhoto = async (userId, newPhoto) => {
     const data = new FormData()

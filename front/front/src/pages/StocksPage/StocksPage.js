@@ -16,7 +16,10 @@ const StocksPage = () => {
 
     useEffect(() => {
         getStocks()
-            .then(response => setStocks(response))
+            .then(response => {
+                setStocks(response)
+                console.log(stocks)
+            })
             .catch(error => console.log(error))
     }, [])
 
@@ -39,7 +42,7 @@ const StocksPage = () => {
                                 <Stock key={stock.id}
                                        img={photoLink}
                                        name={stock.name}
-                                       cost={stock.price}/>
+                                       cost={stock.price.toFixed(2)}/>
                             </Link>
                         })
                     }

@@ -64,7 +64,7 @@ const IndexAccount = () => {
                                              id={stock.id}
                                              img={photoLink}
                                              name={stock.name}
-                                             cost={stock.price}
+                                             cost={stock.price.toFixed(2)}
                                              count={advancedStock.count}
                                              change={change}/>
                     }) : null}

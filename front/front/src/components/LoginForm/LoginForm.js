@@ -10,6 +10,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('')
 
     const handleSubmit = (event) => {
+        console.log(1)
         event.preventDefault()
         authenticate(email)
             .then(() => {

@@ -29,7 +29,7 @@ const FavouritePage = () => {
             <div className={styles.container}>
                 <div className={styles.stocks_container}>
                     {
-                        stocks.map((stock) => {
+                        stocks ? stocks.map((stock) => {
                             const photoLink = getPhotoById(stock.attachmentId)
                             return <Link to={`/stock/${stock.id}`}
                                          className={styles.link}
@@ -39,7 +39,7 @@ const FavouritePage = () => {
                                        name={stock.name}
                                        cost={stock.price}/>
                             </Link>
-                        })
+                        }) : <div></div>
                     }
                 </div>
             </div>
