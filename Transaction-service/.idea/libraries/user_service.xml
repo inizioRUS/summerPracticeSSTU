@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="user-service">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../user-service/out/artifacts/user_service_jar/user-service.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

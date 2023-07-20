@@ -49,11 +49,11 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<AdvancedStock> advancedStocks;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "usersWishlist",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "stock_id", referencedColumnName = "id")
@@ -61,7 +61,8 @@ public class User implements Serializable {
     @ToString.Exclude
     private List<Stock> wishlist;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "attachment_id", referencedColumnName = "id")
     private Attachment attachment;
 

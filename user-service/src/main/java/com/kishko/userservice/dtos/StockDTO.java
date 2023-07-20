@@ -17,6 +17,8 @@ public class StockDTO {
 
     private String name;
 
+    private String shortName;
+
     private Double price;
 
     @JsonIgnore

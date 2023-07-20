@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -96,6 +97,11 @@ public class StockController {
     )
     public ResponseEntity<Double> getProfitByAdvancedStockId(@PathVariable("advancedStockId") Long advancedStockId) throws Exception {
         return new ResponseEntity<>(stockService.getProfitByAdvancedStockId(advancedStockId), HttpStatus.OK);
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<Mono<Double>> getCurrentPriceOfStock(@RequestParam("shortName") String shortName) {
+        return new ResponseEntity<>(stockService.getCurrentPriceOfStock(shortName), HttpStatus.OK);
     }
 
 }

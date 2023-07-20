@@ -15,10 +15,15 @@ import com.kishko.userservice.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -36,6 +41,9 @@ public class StockServiceImpl implements StockService {
 
     @Autowired
     private AttachmentService attachmentService;
+
+    @Autowired
+    private WebClient webClient;
 
 
     @Override
@@ -60,6 +68,11 @@ public class StockServiceImpl implements StockService {
         Stock stock = stockRepository.findById(stockId).orElseThrow(
                 () -> new Exception("There is no stock with id: " + stockId)
         );
+
+        if (stock.getShortName() != null) {
+            stock.setPrice(getCurrentPriceOfStock(stock.getShortName()).block());
+            stockRepository.save(stock);
+        }
 
         return toDTO(stock);
     }
@@ -149,6 +162,23 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
+    public Mono<Double> getCurrentPriceOfStock(String shortName) {
+        return webClient.get()
+                .uri(shortName)
+                .retrieve()
+                .bodyToMono(String.class)
+                .map(response -> {
+                    // извлекаем цифру из ответа
+                    double price = Double.parseDouble(response.split(",")[1].split("]")[0]);
+                    if (price != 0) {
+                        return price;
+                    } else {
+                        throw new RuntimeException("Не удалось извлечь цифру из ответа");
+                    }
+                });
+    }
+
+    @Override
     public AdvancedStock toAdvancedStock(AdvancedStockDTO advancedStockDTO) throws Exception {
 
         StockDTO stock = getStockById(advancedStockDTO.getStockId());
@@ -188,6 +218,7 @@ public class StockServiceImpl implements StockService {
         return Stock.builder()
                 .id(stockDTO.getId())
                 .name(stockDTO.getName())
+                .shortName(stockDTO.getShortName())
                 .price(stockDTO.getPrice())
                 .advancedStocks(stockDTO.getAdvancedStocks())
                 .users(stockDTO.getUsers())
@@ -201,6 +232,7 @@ public class StockServiceImpl implements StockService {
         return StockDTO.builder()
                 .id(stock.getId())
                 .name(stock.getName())
+                .shortName(stock.getShortName())
                 .price(stock.getPrice())
                 .advancedStocks(stock.getAdvancedStocks())
                 .users(stock.getUsers())
