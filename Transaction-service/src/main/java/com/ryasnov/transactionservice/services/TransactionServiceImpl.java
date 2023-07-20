@@ -156,7 +156,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction(SALE, stock);
         createTransaction(toDTO(transaction));
         userService.increaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
-        userService.deleteUserStocks(stock.getUser().getId(), stock.getId(), stock.getCount());
+        userService.deleteUserStocks(stock.getUser().getId(),  stock.getId(), stock.getCount());
         return toDTO(transaction);
        // return userService.toUser(userDTO);
     }
