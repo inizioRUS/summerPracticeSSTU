@@ -61,6 +61,7 @@ public class User implements Serializable {
     @ToString.Exclude
     private List<Stock> wishlist;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "attachment_id", referencedColumnName = "id")
     private Attachment attachment;

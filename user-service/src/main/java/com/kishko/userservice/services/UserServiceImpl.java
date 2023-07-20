@@ -210,8 +210,10 @@ public class UserServiceImpl implements UserService {
 
         stocks = userDB.getWishlist();
 
+        if (stocks.contains(stock)) return userDB;
+
         stocks.add(stock);
-        userDB.setWishlist(stocks);
+//        userDB.setWishlist(stocks);
 
         userRepository.save(toUser(userDB));
 
@@ -236,7 +238,7 @@ public class UserServiceImpl implements UserService {
 
         stocks.remove(stock);
 
-        userDB.setWishlist(stocks);
+//        userDB.setWishlist(stocks);
 
         userRepository.save(toUser(userDB));
 

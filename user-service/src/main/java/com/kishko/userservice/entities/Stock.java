@@ -28,6 +28,9 @@ public class Stock implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "short_name")
+    private String shortName;
+
     @Column(name = "price")
     private Double price;
 

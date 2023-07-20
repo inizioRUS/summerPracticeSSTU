@@ -6,6 +6,7 @@ import com.kishko.userservice.entities.AdvancedStock;
 import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.errors.UserNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -35,4 +36,6 @@ public interface StockService {
     StockDTO toDTO(Stock stock);
 
     Double getProfitByAdvancedStockId(Long advancedStockId) throws Exception;
+
+    Mono<Double> getCurrentPriceOfStock(String shortName);
 }
