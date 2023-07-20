@@ -28,8 +28,8 @@ public interface TransactionService {
     TransactionDTO updateTransactionById(Long id, Transaction transaction) throws TransactionNotFoundException;
     String deleteTransactionById(Long id) throws TransactionNotFoundException;
 
-    TransactionDTO buyingShare(AdvancedStock stock) throws Exception;
-    TransactionDTO sellingShare(AdvancedStock stock) throws Exception;
+    TransactionDTO buyingShare(Long userId, AdvancedStock stock, Long stockId) throws Exception;
+    TransactionDTO sellingShare(Long userId, AdvancedStock stock, Long stockId, Double price) throws Exception;
     TransactionDTO addFavourites(User user, Stock stock) throws UserNotFoundException;
     TransactionDTO deleteFavourites(User user, Stock stock) throws Exception;
     TransactionDTOWithoutStock withdrawal(User user, Double total) throws Exception;

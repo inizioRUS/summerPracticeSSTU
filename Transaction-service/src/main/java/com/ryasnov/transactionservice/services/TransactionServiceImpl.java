@@ -142,21 +142,21 @@ public class TransactionServiceImpl implements TransactionService {
     }
     //Преверсия
     @Override
-    public TransactionDTO buyingShare(AdvancedStock stock) throws Exception {
+    public TransactionDTO buyingShare(Long userId, AdvancedStock stock, Long stockId) throws Exception {
         Transaction transaction = new Transaction(PURCHASE, stock);
         createTransaction(toDTO(transaction));
-        userService.decreaseUserBalance(stock.getUser().getId(), stock.getCount()* stock.getBuyPrice());
-        userService.updateUserStocks(stock.getUser().getId(), stock.getStock().getId(), stock.getCount());
+        userService.decreaseUserBalance(userId, stock.getCount()* stock.getBuyPrice());
+        userService.updateUserStocks(userId, stockId, stock.getCount());
         return toDTO(transaction);
 
     }
 
     @Override
-    public TransactionDTO sellingShare(AdvancedStock stock) throws Exception {
+    public TransactionDTO sellingShare(Long userId, AdvancedStock stock, Long stockId, Double price) throws Exception {
         Transaction transaction = new Transaction(SALE, stock);
         createTransaction(toDTO(transaction));
-        userService.increaseUserBalance(stock.getUser().getId(), stock.getCount()*stock.getStock().getPrice());
-        userService.deleteUserStocks(stock.getUser().getId(), stock.getId(), stock.getCount());
+        userService.increaseUserBalance(userId, stock.getCount()*price);
+        userService.deleteUserStocks(userId, stock.getId(), stock.getCount());
         return toDTO(transaction);
        // return userService.toUser(userDTO);
     }
