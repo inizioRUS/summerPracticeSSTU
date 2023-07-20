@@ -88,7 +88,7 @@ public class TransactionController {
             description = "Для реализации необходимо передать надстроку над множеством одинаковых транзаций"
     )
     ResponseEntity<String> buyingShare(@RequestParam("userId") Long userId, @RequestBody AdvancedStock advancedStock, @RequestParam("stockId") Long stockId) throws Exception{
-        Transaction transaction = transactionService.toTransaction(transactionService.buyingShare(userId, advancedStock, stockid));
+        Transaction transaction = transactionService.toTransaction(transactionService.buyingShare(userId, advancedStock, stockId));
         producer.sendJsonMessage(transaction);
         return new ResponseEntity<>("Json message " + transaction + " has sent to RabbitMQ", HttpStatus.OK);
     }

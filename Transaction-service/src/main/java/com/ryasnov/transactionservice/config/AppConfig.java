@@ -1,10 +1,6 @@
 package com.ryasnov.transactionservice.config;
 
-import com.kishko.userservice.repositories.UserRepository;
-
-import com.ryasnov.transactionservice.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,10 +15,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @ComponentScan({"com.kishko.userservice.services","com.kishko.photoservice.services"})
 
 public class AppConfig {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TransactionRepository transactionRepository;
     @Bean
     public WebClient localApiClient() {
         return WebClient.create("http://80.249.145.114:8000/today/");

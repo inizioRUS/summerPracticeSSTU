@@ -1,10 +1,12 @@
 package com.kishko.userservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ryasnov.transactionservice.entities.Transaction;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 //    TODO НЕ МОЕ ОТДАТЬ ТОМУ КТО ДЕЛАЕТ STOCK
 
@@ -34,6 +36,9 @@ public class AdvancedStock implements Serializable {
 
     @Column(name = "buyPrice")
     private Double buyPrice;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 
     public AdvancedStock(Stock stock, User user, Integer count) {
         this.stock = stock;

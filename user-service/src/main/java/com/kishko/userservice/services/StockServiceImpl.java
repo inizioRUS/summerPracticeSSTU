@@ -192,17 +192,20 @@ public class StockServiceImpl implements StockService {
                 .user(user)
                 .count(advancedStockDTO.getCount())
                 .buyPrice(advancedStockDTO.getBuyPrice())
+                .transactions(advancedStockDTO.getTransactions())
                 .build();
     }
 
     @Override
     public AdvancedStockDTO toDTO(AdvancedStock advancedStock) {
+
         return AdvancedStockDTO.builder()
                 .id(advancedStock.getId())
                 .stockId(advancedStock.getStock().getId())
                 .userId(advancedStock.getUser().getId())
                 .count(advancedStock.getCount())
                 .buyPrice(advancedStock.getBuyPrice())
+                .transactions(advancedStock.getTransactions())
                 .build();
     }
 

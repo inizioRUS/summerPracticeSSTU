@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration(value = "myConfig")
 @EnableJpaRepositories(basePackages = {"com.kishko.userservice.repositories", "com.kishko.photoservice.repositories"})
-@EntityScan(basePackages = {"com.kishko.userservice.entities", "com.kishko.photoservice.entities"})
+@EntityScan(basePackages = {"com.kishko.userservice.entities", "com.kishko.photoservice.entities", "com.ryasnov.transactionservice.entities"})
 @ComponentScan(basePackages = {"com.kishko.photoservice", "com.kishko.userservice"})
 public class AppConfig {
 
