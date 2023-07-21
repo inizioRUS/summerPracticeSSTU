@@ -37,6 +37,7 @@ public class AdvancedStock implements Serializable {
     @Column(name = "buyPrice")
     private Double buyPrice;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 

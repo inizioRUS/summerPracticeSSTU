@@ -49,6 +49,14 @@ public class StockController {
         return new ResponseEntity<>(stockService.getStockById(stockId), HttpStatus.OK);
     }
 
+    @GetMapping("/advancedStock/{advancedStockId}")
+    @Operation(
+            summary = "Получить advanced акцию по ее ID"
+    )
+    public ResponseEntity<AdvancedStockDTO> getAdvancedStockById(@PathVariable("advancedStockId") Long advancedStockId) throws Exception {
+        return new ResponseEntity<>(stockService.getAdvancedStockById(advancedStockId), HttpStatus.OK);
+    }
+
     @GetMapping("/advanced/{userId}")
     @Operation(
             summary = "Получить все акции пользователя и их количество по его ID"

@@ -1,5 +1,6 @@
 package com.kishko.userservice.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ryasnov.transactionservice.entities.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class AdvancedStockDTO {
 
     private Double buyPrice;
 
+    @JsonIgnore
     private List<Transaction> transactions;
 
 }

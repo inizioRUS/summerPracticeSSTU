@@ -38,4 +38,6 @@ public interface StockService {
     Double getProfitByAdvancedStockId(Long advancedStockId) throws Exception;
 
     Mono<Double> getCurrentPriceOfStock(String shortName);
+
+    AdvancedStockDTO getAdvancedStockById(Long advancedStockId) throws Exception;
 }

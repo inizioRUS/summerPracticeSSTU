@@ -179,6 +179,17 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
+    public AdvancedStockDTO getAdvancedStockById(Long advancedStockId) throws Exception {
+
+        AdvancedStock advancedStock = advancedStockRepository.findById(advancedStockId).orElseThrow(
+                () -> new Exception("There is no stock with id: " + advancedStockId)
+        );
+
+        return toDTO(advancedStock);
+
+    }
+
+    @Override
     public AdvancedStock toAdvancedStock(AdvancedStockDTO advancedStockDTO) throws Exception {
 
         StockDTO stock = getStockById(advancedStockDTO.getStockId());

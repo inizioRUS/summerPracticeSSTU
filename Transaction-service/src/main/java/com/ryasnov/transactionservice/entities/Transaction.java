@@ -1,15 +1,12 @@
 package com.ryasnov.transactionservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kishko.userservice.entities.AdvancedStock;
-import com.kishko.userservice.entities.Stock;
-import com.kishko.userservice.entities.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import java.io.Serializable;
+import java.util.Objects;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +15,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 @Table(name = "transactions")
 //@EntityScan(basePackageClasses = {AdvancedStock.class, Transaction.class})
-public class Transaction {
+public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +35,24 @@ public class Transaction {
         this.stock = stock;
     }
 
+    public void setStock(AdvancedStock stock) {
+        this.stock = stock;
+    }
+
     public Transaction(TypeTransaction type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Transaction that = (Transaction) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
