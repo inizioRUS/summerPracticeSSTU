@@ -6,6 +6,7 @@ import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.entities.User;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.repositories.AdvancedStockRepository;
+import com.kishko.userservice.repositories.StockRepository;
 import com.kishko.userservice.repositories.UserRepository;
 import com.kishko.userservice.services.UserService;
 import com.ryasnov.transactionservice.dtos.TransactionDTO;
@@ -33,9 +34,11 @@ public class TransactionServiceImpl implements TransactionService {
     AdvancedStockRepository advancedStockRepository;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    StockRepository stockRepository;
     @Override
     public Transaction toTransaction(TransactionDTO transactionDTO) {
+        System.out.println(transactionDTO.getStockId());
         return Transaction.builder()
                 .id(transactionDTO.getId())
                 .stock(advancedStockRepository.findById(transactionDTO.getStockId()).get())
@@ -142,13 +145,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
     //Преверсия
     @Override
-    public TransactionDTO buyingShare(Long userId, AdvancedStock stock, Long stockId) throws Exception {
-        Transaction transaction = new Transaction(PURCHASE, stock);
+    public TransactionDTO buyingShare(Long userId,  Long stockId) throws Exception {
+        Stock stock = stockRepository.findById(stockId).get();
+        User user = userRepository.findById(userId).get();
+        AdvancedStock advancedStock = new AdvancedStock(stock, user,1);
+        advancedStockRepository.save(advancedStock);
+        Transaction transaction = new Transaction(PURCHASE, advancedStock);
         createTransaction(toDTO(transaction));
-        userService.decreaseUserBalance(userId, stock.getCount()* stock.getBuyPrice());
-        userService.updateUserStocks(userId, stockId, stock.getCount());
+        userService.decreaseUserBalance(userId, stock.getPrice());
+        userService.updateUserStocks(userId, stockId, 1);
         return toDTO(transaction);
-
     }
 
     @Override
