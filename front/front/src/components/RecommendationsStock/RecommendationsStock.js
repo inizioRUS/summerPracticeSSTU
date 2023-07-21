@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from "./RecommendationsStock.module.css"
 
-const RecommendationsStock = ({ img, name, cost, change }) => {
+const RecommendationsStock = ({ img, name, cost }) => {
     return (
         <button className={styles.recommendations_stock}>
                 <div className={styles.img_container} style={{
@@ -10,9 +10,7 @@ const RecommendationsStock = ({ img, name, cost, change }) => {
             <div className={styles.small_container}>
                 <div>{name}</div>
                 <div className={styles.text_container}>
-                    <div>{cost}₽</div>
-                    &nbsp;<div>·</div>&nbsp;
-                    <div className={styles.procent}>+{change}%</div>
+                    <div>{cost}$</div>
                 </div>
             </div>
         </button>

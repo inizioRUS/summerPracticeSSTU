@@ -26,7 +26,7 @@ export const authenticate = async (email) => {
     return await fetch(`http://31.184.253.4:8080/users/email?email=${email}`, options)
         .then(response => {
             console.log(response.json());
-            return response.json()
+            return response
         })
         .then(response => {
             console.log("end")

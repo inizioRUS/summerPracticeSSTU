@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import styles from "./AccountStock.module.css"
-import test_icon from "./Ellipse 19.png"
+import styles from "./StockPageStock.module.css"
 import {useNavigate} from "react-router";
 
-const AccountStock = ({id, img, name, cost, count, change}) => {
+const StockPageStock = ({id, img, name, cost, count, change}) => {
     const navigate = useNavigate()
     const [changeColor, setChangeColor] = useState()
 
@@ -12,7 +11,7 @@ const AccountStock = ({id, img, name, cost, count, change}) => {
     })
 
     return (
-        <button className={styles.account_stock}
+        <div className={styles.account_stock}
                 onClick={() => {navigate(`/stock/${id}`)}}>
             <div className={styles.left_container}>
                 <div className={styles.img_container} style={{
@@ -31,8 +30,8 @@ const AccountStock = ({id, img, name, cost, count, change}) => {
                 }}>{change.toFixed(2)}$ · {(change/cost).toFixed(2)}%</div>
             </div>
 
-        </button>
+        </div>
     );
 };
 
-export default AccountStock;
+export default StockPageStock;

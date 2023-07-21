@@ -9,6 +9,7 @@ import BackButton from "./components/BackButton/BackButton";
 import IncreaseBalancePage from "./pages/IncreaseBalancePage/IncreaseBalancePage";
 import OperationsPage from "./pages/OperationsPage/OperationsPage";
 import FavouritePage from "./pages/FavouritePage/FavouritePage";
+import AdvancedStocksPage from "./pages/AdvancedStocksPage/AdvancedStocksPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path={"/increase"} element={<IncreaseBalancePage />} />
             <Route path={"/operations"} element={<OperationsPage />} />
             <Route path={"/favourite"} element={<FavouritePage />} />
+            <Route path={"/advanced"} element={<AdvancedStocksPage />} />
         </Routes>
     </div>
   );

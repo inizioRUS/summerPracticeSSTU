@@ -1,4 +1,4 @@
-.recommendations_stock {
+.account_stock {
     width: 540px;
     height: 80px;
 
@@ -7,8 +7,7 @@
     background: none;
 
     display: flex;
-    justify-content: flex-start;
-    column-gap: 40px;
+    justify-content: space-between;
 
     font-family: 'Open Sans', sans-serif;
     color: #000;
@@ -18,14 +17,20 @@
     line-height: normal;
 }
 
-.recommendations_stock:hover {
-    cursor: pointer;
-    background-color: #F3F3F3;
+.account_stock:focus {
+    text-decoration: none;
+}
+
+.left_container {
+    width: 200px;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 10px;
 }
 
 .img_container {
     width: 150px;
-    height: 80px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 120px auto;
@@ -38,17 +43,9 @@
 
 .small_container {
     text-align: left;
+    width: 120px;
     height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.text_container {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.procent {
-    color: #359C41;
 }

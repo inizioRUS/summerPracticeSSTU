@@ -12,7 +12,7 @@ export const getUserById = async (id) => {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
     };
-    return await fetch(`${API_URl}/${id}`, options)
+    return await fetch(`${API_URl}/${1}`, options)
         .then(response => response.json())
         .then((response) => {
             if (response) {
@@ -55,13 +55,23 @@ export const updateUserById = async (id, user) => {
         .catch(error => console.log(error))
 }
 
-export const updateUserStocks = async (userId, stockId, count) => {
-
+export const addUserStocks = async (userId, stockId) => {
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+        },
+    };
+    return await fetch(`${API_URl}/${userId}/stock/${stockId}/1`, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
 }
 
 export const increaseUserBalance = async (userId, amount) => {
     const options = {
         method: 'PUT',
+        headers: {"Access-Control-Allow-Origin": "*"},
     };
     fetch(`${API_URl}/${userId}/incBalance/${amount}`, options)
         .then(response => response.json())
@@ -71,6 +81,7 @@ export const increaseUserBalance = async (userId, amount) => {
 export const decreaseUserBalance = async (userId, amount) => {
     const options = {
         method: 'PUT',
+        headers: {"Access-Control-Allow-Origin": "*"}
     };
     fetch(`${API_URl}/${userId}/decBalance/${amount}`, options)
         .catch(error => console.log(error))
@@ -105,9 +116,31 @@ export const changeUserPhoto = async (userId, newPhoto) => {
         .then(response => response.json())
         .then(response => console.log(response))
         .catch(error => console.log(error))
-    setTimeout(() => {}, 10000)
+    setTimeout(() => {
+    }, 10000)
 
 }
-export const deleteUserStocks = async (userId, stockId, count) => {
-
+export const deleteUserStocks = async (userId, advancedStockId) => {
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+        },
+    };
+    return await fetch(`${API_URl}/${userId}/stock/${advancedStockId}/1`, options)
+        .then(response => response.json())
+        .catch(error => console.log(error))
+}
+export const getProfitByUserID = async (userId) => {
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
+        },
+    };
+    return await fetch(`${API_URl}/profit/user/${userId}`, options)
+        .then(response => response.json())
+        .catch(err => console.error(err));
 }

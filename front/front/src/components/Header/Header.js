@@ -14,10 +14,16 @@ const Header = () => {
 
     useEffect(() => {
         getUserById(getCurrentUser().id)
+            .then(response => {
+                response.attachmentId
+                    ? setAva(getPhotoById(response.attachmentId))
+                    : setAva(defaultAva)
+            })
             .catch(error => console.log(error))
-        getCurrentUser().attachmentId
-            ? setAva(getPhotoById(getCurrentUser().attachmentId))
-            : setAva(defaultAva)    }, [])
+        // getCurrentUser().attachmentId
+        //     ? setAva(getPhotoById(getCurrentUser().attachmentId))
+        //     : setAva(defaultAva)
+    }, [])
     return (
         <div className={styles.header_container}>
             <button className={styles.logo}
@@ -31,7 +37,6 @@ const Header = () => {
                     style={{
                         backgroundImage: `url(${ava})`
                     }} onClick={() => navigate("/user")}>
-
             </button>
         </div>
     );

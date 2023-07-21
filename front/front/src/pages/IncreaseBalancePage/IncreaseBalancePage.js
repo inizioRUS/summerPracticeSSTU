@@ -41,7 +41,7 @@ const IncreaseBalancePage = () => {
                 </div>
                 <div className={styles.increase}>
                     <div className={styles.header}>Баланс</div>
-                    <div className={styles.money}>{getCurrentUser().balance}₽</div>
+                    <div className={styles.money}>{getCurrentUser().balance.toFixed(2)}$</div>
                     <form className={styles.form}
                           onSubmit={(event => {
                               event.preventDefault()
@@ -49,7 +49,7 @@ const IncreaseBalancePage = () => {
                           })}>
                         <input className={styles.input}
                                type={"number"}
-                               placeholder={"0₽"}
+                               placeholder={"0$"}
                                onChange={(event) => {
                                    setTotal(parseInt(event.target.value))
                                }}/>

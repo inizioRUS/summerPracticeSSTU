@@ -6,25 +6,45 @@ import operations from "./icons/operations.png"
 import AccountStock from "../AccountStock/AccountStock";
 import MoreButton from "../MoreButton/MoreButton";
 import {useNavigate} from "react-router";
-import {getCurrentUser} from "../../services/UserService";
+import {getCurrentUser, getProfitByUserID, getUserById} from "../../services/UserService";
 import {getPhotoById} from "../../services/PhotoService";
+import {Link} from "react-router-dom";
 
 const IndexAccount = () => {
     const navigate = useNavigate()
 
-    const [user, setUser] = useState({})
-    const [changes, setChanges] = useState("+10,2₽ . 1,1%")
+    const [balance, setBalance] = useState(0)
+    const [changes, setChanges] = useState(0)
+    const [newAdvStocks, setNewAdvStocks] = useState(null)
+    const [profitColor, setProfitColor] = useState()
+    const [profitTextColor, setProfitTextColor] = useState()
+
 
     useEffect(() => {
-        setUser(getCurrentUser())
+        getUserById(getCurrentUser().id)
+            .then(response => {
+                setBalance(response.balance)
+                setNewAdvStocks(response.advancedStocks.slice(0, 3))
+            })
+        getProfitByUserID(getCurrentUser().id)
+            .then(response => {
+                setChanges(response.toFixed(2))
+                response >= 0 ? setProfitColor("#D9F4E1") : setProfitColor("#E1C6C6")
+                response >= 0 ? setProfitTextColor("#359C41") : setProfitTextColor("#D83636")
+            })
+            .catch(error => console.log(error))
     }, [])
 
     return (
         <div className={styles.account}>
             <div className={styles.header}>Брокерский счёт</div>
-            <div className={styles.money}>{user.balance}₽</div>
+            <div className={styles.money}>{balance ? balance.toFixed(2) : ""}$</div>
             <div className={styles.changes_container}>
-                <div className={styles.changes}>{changes}</div>
+                <div className={styles.changes}
+                     style={{
+                         backgroundColor: profitColor,
+                         color: profitTextColor
+                     }}>{changes}$</div>
             </div>
             <div className={styles.functions}>
                 <div className={styles.function}>
@@ -56,22 +76,25 @@ const IndexAccount = () => {
                 </div>
             </div>
             <div className={styles.content}>
-                    {user.advancedStocks ? user.advancedStocks.map((advancedStock) => {
-                        const stock = advancedStock.stock
-                        const photoLink = getPhotoById(stock.attachmentId);
-                        const change = stock.price - advancedStock.buyPrice
-                        return <AccountStock key={stock.id}
-                                             id={stock.id}
-                                             img={photoLink}
-                                             name={stock.name}
-                                             cost={stock.price.toFixed(2)}
-                                             count={advancedStock.count}
-                                             change={change}/>
-                    }) : null}
+                {
+                    newAdvStocks ? newAdvStocks.map((advancedStock) => {
+                            const stock = advancedStock.stock
+                            const photoLink = getPhotoById(stock.attachmentId);
+                            const change = stock.price - advancedStock.buyPrice
+                            return <AccountStock key={stock.id}
+                                                 id={stock.id}
+                                                 img={photoLink}
+                                                 name={stock.name}
+                                                 cost={stock.price.toFixed(2)}
+                                                 count={advancedStock.count}
+                                                 change={change}/>
+                        })
+                        : ""
+                }
             </div>
-            <div>
+            <Link to={"/advanced"}>
                 <MoreButton/>
-            </div>
+            </Link>
         </div>
     );
 };
