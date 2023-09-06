@@ -19,7 +19,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @Table(name = "transactions")
-//@EntityScan(basePackageClasses = {AdvancedStock.class, Transaction.class})
 public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +28,8 @@ public class Transaction implements Serializable {
     @ManyToOne
     @JoinColumn(name = "advanced_stock_id")
     private AdvancedStock stock;
+
+    private Long stock;
 
     public Transaction(TypeTransaction type, AdvancedStock stock) {
         this.type = type;

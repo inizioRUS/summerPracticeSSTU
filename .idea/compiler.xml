@@ -11,12 +11,14 @@
         <module name="auth-service" />
         <module name="user-service" />
         <module name="demo" />
+        <module name="summerPracticeSSTU" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth-service" target="17" />
       <module name="demo" target="17" />
       <module name="photo-service" target="17" />
+      <module name="summerPracticeSSTU" target="1.5" />
       <module name="user-service" target="17" />
     </bytecodeTargetLevel>
   </component>

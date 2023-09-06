@@ -1,16 +1,24 @@
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://84.38.183.185:5432/postgres
+#    username: postgres
+#    password: postfres
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#    show_sql: true
 spring:
   datasource:
-    url: jdbc:postgresql://84.38.183.185:5432/postgres
-    username: postgres
-    password: postfres
+    url: jdbc:h2:~/data/productDB
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show_sql: true
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
   main:
     web-application-type: servlet
     allow-bean-definition-overriding: true

@@ -1,7 +1,7 @@
 package com.ryasnov.transactionservice.controllers;
 import com.ryasnov.transactionservice.entities.Transaction;
 import com.ryasnov.transactionservice.producer.RabbitMQJsonProducer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/message")
+@RequiredArgsConstructor
 public class MessageJsonController {
 
-    @Autowired
-    private RabbitMQJsonProducer producer;
+    private final RabbitMQJsonProducer producer;
 
     @PostMapping("/publish")
     public ResponseEntity<String> sendJsonMessage(@RequestBody Transaction transaction) {

@@ -6,7 +6,12 @@ import com.kishko.userservice.entities.Stock;
 import com.kishko.userservice.errors.UserNotFoundException;
 import com.kishko.userservice.services.StockService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +28,7 @@ import java.util.List;
 public class StockController {
 
     @Autowired
-    private StockService stockService;
+    private final StockService stockService;
 
     @GetMapping
     @Operation(
@@ -42,11 +47,49 @@ public class StockController {
     }
 
     @GetMapping("/{stockId}")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = StockDto.class)))
+                            }, responseCode = "200", description = "everithing is ok"
+                    ),
+                    @ApiResponse(
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class)))
+                            }, responseCode = "404"
+                    ),
+                    @ApiResponse(
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class)))
+                            }, responseCode = "434"
+                    ),
+                    @ApiResponse(
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = ErrorDto.class)))
+                            }, responseCode = "500"
+                    )
+            })
     @Operation(
             summary = "Получить акцию по ее ID"
     )
-    public ResponseEntity<StockDTO> getStockById(@PathVariable("stockId") Long stockId) throws Exception {
-        return new ResponseEntity<>(stockService.getStockById(stockId), HttpStatus.OK);
+    public ResponseEntity<Object> getStockById(@PathVariable("stockId") Long stockId) {
+        try {
+            return ResponseEntity.ok(stockService.getStockById(stockId));
+        }
+        catch(StockNotFoundException e){
+            return new ResponseEntity(new ErrorDto("StockNotFound", "Cannot find stock by stockId"+stockId), HttpStatus.FAILED_DEPENDENCY);
+        } catch(Throwable e){
+            return new ResponseEntity(new ErrorDto("UNEXPECTED_EXCEPTION", "Обратись позже"),  HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/advancedStock/{advancedStockId}")

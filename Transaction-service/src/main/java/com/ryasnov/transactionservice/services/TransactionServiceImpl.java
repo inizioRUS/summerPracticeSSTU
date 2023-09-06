@@ -15,7 +15,8 @@ import com.ryasnov.transactionservice.entities.Transaction;
 import com.ryasnov.transactionservice.entities.TypeTransaction;
 import com.ryasnov.transactionservice.errors.TransactionNotFoundException;
 import com.ryasnov.transactionservice.repositories.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,17 +26,15 @@ import java.util.Optional;
 import static com.ryasnov.transactionservice.entities.TypeTransaction.*;
 
 @Service
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
-    @Autowired
-    TransactionRepository transactionRepository;
-    @Autowired
-    UserService userService;
-    @Autowired
-    AdvancedStockRepository advancedStockRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    StockRepository stockRepository;
+
+    private final TransactionRepository transactionRepository;
+    private final UserService userService;
+    private final AdvancedStockRepository advancedStockRepository;
+    private final UserRepository userRepository;
+    private final StockRepository stockRepository;
+
     @Override
     public Transaction toTransaction(TransactionDTO transactionDTO) {
         System.out.println(transactionDTO.getStockId());
@@ -120,6 +119,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionDTO updateTransactionById(Long id, Transaction transaction) throws TransactionNotFoundException {
         Optional<Transaction> optionalTmp = transactionRepository.findById(id);
+        if(optionalTmp.isEmpty()){
+            throw new TransactionNotFoundException();
+        }
         Transaction tmp = optionalTmp.get();
 //        if(Objects.nonNull(transaction.getUser())){
 //            tmp.setUser(transaction.getUser());
@@ -145,6 +147,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
     //Преверсия
     @Override
+    @Transactional
     public TransactionDTO buyingShare(Long userId,  Long stockId) throws Exception {
         Stock stock = stockRepository.findById(stockId).get();
         User user = userRepository.findById(userId).get();
